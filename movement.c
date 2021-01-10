@@ -446,14 +446,6 @@ if (board[7][4]!='k'){
 }
 }
 
-void moveconversion(char move[5] ,int *m0,int *m1,int *m2,int *m3)
-{
-*m0=(tolower(move[0])-'a');
-*m1=(move[1]-'0')-1;
-*m2=(tolower(move[2])-'a');
-*m3=(move[3]-'0')-1;
-}
-
 void save(){
 char file1[100];
 printf("Enter the name of the save file\n");
@@ -552,20 +544,18 @@ for (int i=0;i<8;i++){
 }
 }
 
-void inputCheck(int *x,int *m0,int *m1,int *m2,int *m3,char piece)
+void inputCheck(int *x,int *movei,int *movej,int *movefi,int *movefj,char piece)
 {
-int movei,movej, movefi,movefj;
 char move[5];
 while (1){
 
     gets(move);
-    moveconversion(move, &movei, &movej, &movefi, &movefj);
-    *m0=movei;
-    *m1=movej;
-    *m2=movefi;
-    *m3=movefj;
+    *movei=(tolower(move[0])-'a');
+    *movej=(move[1]-'0')-1;
+    *movefi=(tolower(move[2])-'a');
+    *movefj=(move[3]-'0')-1;
     if (((tolower(move[0])<='h'&& tolower(move[0])>='a')&&(move[1]-'0')<9&& (move[1]-'0')>0&&(tolower(move[2])<='h'&& tolower(move[2])>='a')&&(move[3]-'0')<9&& (move[3]-'0')>0)&&(move[0]!=move[2]||(move[1]-'0')!=(move[3]-'0'))&&(tolower(move[4])=='n'||tolower(move[4])=='r'||tolower(move[4])=='b'||tolower(move[4])=='q'||move[4]=='\0')){
-        if (CheckMovement( movej,  movei, movefj,  movefi ,piece ,move[4])){
+        if (CheckMovement( *movej,  *movei, *movefj,  *movefi ,piece ,move[4])){
 
             break;
         }
