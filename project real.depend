@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1610129819 source:e:\term 3\programming 1\project real\movement.c
+	<stdio.h>
+	<stdlib.h>
+
+1609956486 source:e:\term 3\programming 1\project real\undoredo.c
+	<stdio.h>
+	<conio.h>
+	<stdlib.h>
+
+1610143237 source:e:\term 3\programming 1\project real\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+
+1610143918 source:e:\term 3\programming 1\project real\check.c
+	<stdio.h>
+	<conio.h>
+	<stdlib.h>
+
