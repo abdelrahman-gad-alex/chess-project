@@ -31,7 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="UndoRedo.c">
+		<Unit filename="UndoRedo-SaveLoad.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="check.c">
