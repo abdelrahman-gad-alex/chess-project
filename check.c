@@ -4,7 +4,7 @@
 
 
 int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char pro);
-void movement (int movej, int movei,int movefj, int movefi,char board[8][8]) ;
+void movement (int movej, int movei,int movefj, int movefi) ;
 
 char board[8][8] ;
 
@@ -101,7 +101,7 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi){
         storeCheckBy[n] = checkby[n] ;
     }
     if(CheckMovement(movej, movei, movefj, movefi, p,'\0')){
-        movement(movej,movei,movefj,movefi,board) ;
+        movement(movej,movei,movefj,movefi) ;
         int r ;
         r = checked(p) ;
         board[movej][movei] = start ;
