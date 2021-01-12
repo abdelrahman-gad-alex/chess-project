@@ -347,68 +347,66 @@ int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char p
 
     int x;
     x=0;
-if (piece == 'w'){
+    if (piece == 'w'){
 
-if(((board[movefj][movefi]>'A'&&board[movefj][movefi]<'Z')||board[movefj][movefi]=='.'||board[movefj][movefi]=='-')&&(board[movej][movei]>'a'&&board[movej][movei]<'z')){
-switch(board[movej][movei])
-{
-    case 'p':
-    x=CheckPawnW(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'r':
-    x=CheckRook(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'n':
-    x=Checkknight(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'b':
-    x=CheckBishop(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'k':
-    x=CheckKing(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'q':
-    x=CheckQueen(movej,  movei, movefj,  movefi, pro);
-    break ;
-    default:
-    x=0;
-}
-}
-return x;
+        if(((board[movefj][movefi]>'A'&&board[movefj][movefi]<'Z')||board[movefj][movefi]=='.'||board[movefj][movefi]=='-')&&(board[movej][movei]>'a'&&board[movej][movei]<'z')){
+            switch(board[movej][movei])
+            {
+                case 'p':
+                x=CheckPawnW(movej,  movei, movefj,  movefi, pro);
+                break ;
+                case 'r':
+                x=CheckRook(movej,  movei, movefj,  movefi, pro);
+                break ;
+                case 'n':
+                x=Checkknight(movej,  movei, movefj,  movefi, pro);
+                break ;
+                case 'b':
+                x=CheckBishop(movej,  movei, movefj,  movefi, pro);
+                break ;
+                case 'k':
+                x=CheckKing(movej,  movei, movefj,  movefi, pro);
+                break ;
+                case 'q':
+                x=CheckQueen(movej,  movei, movefj,  movefi, pro);
+                break ;
+                default:
+                x=0;
+            }
+        }
+        return x;
 
-}
-else if (piece == 'b'){
+    }else if (piece == 'b'){
 
-if(((board[movefj][movefi]>'a'&&board[movefj][movefi]<'z')||board[movefj][movefi]=='.'||board[movefj][movefi]=='-')&&(board[movej][movei]>'A'&&board[movej][movei]<'Z')){
-switch(board[movej][movei])
-{
-    case 'P':
-    x=CheckPawnB(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'R':
-    x=CheckRook(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'N':
-    x=Checkknight(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'B':
-    x=CheckBishop(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'K':
-    x=CheckKing(movej,  movei, movefj,  movefi, pro);
-    break ;
-    case 'Q':
-    x=CheckQueen(movej,  movei, movefj,  movefi, pro);
-    break ;
-    default:
-    x=0;
-}
-}
-return x;
+        if(((board[movefj][movefi]>'a'&&board[movefj][movefi]<'z')||board[movefj][movefi]=='.'||board[movefj][movefi]=='-')&&(board[movej][movei]>'A'&&board[movej][movei]<'Z')){
+        switch(board[movej][movei])
+        {
+            case 'P':
+            x=CheckPawnB(movej,  movei, movefj,  movefi, pro);
+            break ;
+            case 'R':
+            x=CheckRook(movej,  movei, movefj,  movefi, pro);
+            break ;
+            case 'N':
+            x=Checkknight(movej,  movei, movefj,  movefi, pro);
+            break ;
+            case 'B':
+            x=CheckBishop(movej,  movei, movefj,  movefi, pro);
+            break ;
+            case 'K':
+            x=CheckKing(movej,  movei, movefj,  movefi, pro);
+            break ;
+            case 'Q':
+            x=CheckQueen(movej,  movei, movefj,  movefi, pro);
+            break ;
+            default:
+            x=0;
+        }
+        }
+        return x;
 
-}
-    else{
-    return 0;
+    }else{
+        return 0;
     }
 }
 

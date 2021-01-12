@@ -18,6 +18,8 @@ struct pieces{
 int checkby[3] = {0,0,0} ;
 
 
+
+
 void storepieces(){
     // put the places in the struct
     whitePieces.NOp = 0 ;
@@ -82,13 +84,6 @@ int checked(char p){
 
 }
 
-void minMax (int arr[]){
-    if (arr[0]>arr[1]){
-        int temp = arr[0] ;
-        arr[0] = arr[1] ;
-        arr[1] = temp ;
-    }
-}
 
 int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi){
     if(movei<0 || movei >7 || movej<0 || movej >7 || movefi<0 || movefi >7 || movefj<0 || movefj >7){
@@ -115,6 +110,14 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi){
         return 1 ;
     }
 
+}
+
+void minMax (int arr[]){
+    if (arr[0]>arr[1]){
+        int temp = arr[0] ;
+        arr[0] = arr[1] ;
+        arr[1] = temp ;
+    }
 }
 
 
@@ -212,6 +215,127 @@ int checkmate(char p){
     return 1 ;
 
 }
+
+
+int lackofCheckmate(char p){
+    int NOp ;
+    struct pieces *current ;
+    if(p=='b'){
+        current = &BlackPieces ;
+        NOp = BlackPieces.NOp ;
+    }else{
+        current = &whitePieces ;
+        NOp = whitePieces.NOp ;
+    }
+
+    if( NOp > 3){
+        return 0 ;
+    }
+    int b = 0 ;
+    int n = 0 ;
+    for(int i=0 ; i< NOp ; i++){
+        char piece = board[current ->places[i][0]][current ->places[i][1]] ;
+
+        if(piece!='k' && piece !='K' && piece!='b' && piece!='B' && piece!='n' && piece!='N' ){
+            return 0 ;
+        }
+        if (piece == 'b'|| piece == 'B' ){
+            b++ ;
+        }else if (piece == 'n'||piece == 'N' ){
+            n++ ;
+        }
+    }
+
+    if (b==0 ||(n==0 && b==1)){
+        return 1 ;
+    }else{
+        return 0 ;
+    }
+}
+
+
+int stalemate(char p){
+    if (lackofCheckmate('w')==1 && lackofCheckmate('b')==1){
+        return 1 ;
+    }
+
+    struct pieces *current ;
+    int i,j ;
+    if(p == 'b'){
+        current = &BlackPieces ;
+        i = BlackPieces.k[0] ;
+        j = BlackPieces.k[1] ;
+    }else{
+        current = &whitePieces ;
+        i = whitePieces.k[0] ;
+        j = whitePieces.k[1] ;
+    }
+
+    // For the king's moves
+    for(int x=-1 ; x<2 ; x++){
+        for(int y=-1 ; y<2 ; y++){
+            if(x==0 && y==0){
+                continue ;
+            }
+            if(tempMoveCheck(p, i, j, i+x, j+y)==0){
+                return 0 ;
+            }
+        }
+    }
+
+    for(int z=0 ; z<current->NOp ; z++){
+        i= current->places[z][0] ;
+        j= current->places[z][1] ;
+        if(board[i][j]=='k' ||board[i][j]=='K'){
+            continue ;
+        }
+        if (board[i][j]=='b' || board[i][j]=='q' || board[i][j]=='B' || board[i][j]=='Q' ){
+            if(tempMoveCheck(p, i, j, i+1, j+1)==0 || tempMoveCheck(p, i, j, i-1, j+1)==0 || tempMoveCheck(p, i, j, i+1, j-1)==0 ||tempMoveCheck(p, i, j, i-1, j-1)==0 ){
+                return 0 ;
+            }
+        }
+        if (board[i][j]=='r' || board[i][j]=='q' || board[i][j]=='R' || board[i][j]=='Q' ){
+            if(tempMoveCheck(p, i, j, i+1, j)==0 || tempMoveCheck(p, i, j, i-1, j)==0 || tempMoveCheck(p, i, j, i, j+1)==0 ||tempMoveCheck(p, i, j, i, j-1)==0 ){
+                return 0 ;
+            }
+        }else if (board[i][j]=='n' || board[i][j]=='N'){
+            for(int x=-2 ; x<3 ; x++){
+                for(int y=-3 ; y<3 ; y++){
+                    if (x*y == 2 || x*y == -2){
+                        if(tempMoveCheck(p, i, j, i+x, j+y)==0){
+                            return 0 ;
+                    }}
+                }
+            }
+        }else if (board[i][j]=='p'){
+            if(tempMoveCheck(p, i, j, i-1, j)==0 || tempMoveCheck(p, i, j, i-1, j-1)==0 || tempMoveCheck(p, i, j, i-1, j+1)==0 ){
+                return 0 ;
+            }
+        }else if (board[i][j]=='P'){
+            if(tempMoveCheck(p, i, j, i+1, j)==0 || tempMoveCheck(p, i, j, i+1, j-1)==0 || tempMoveCheck(p, i, j, i+1, j+1)==0 ){
+                return 0 ;
+            }
+        }
+    }
+
+    return 1 ;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
