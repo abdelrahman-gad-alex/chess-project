@@ -4,12 +4,18 @@
 #include <ctype.h>
 struct node
 {
-	char data[8][8];
-	struct node *pNext;
-	struct node *pPrev;
+	char chess[8][8];
+	char player ;
+	int Rl;
+    int Rr;
+    int rl;
+    int rr;
+    int ifchecked ;
+	struct node *next;
+	struct node *prev;
 };
-struct node *pHead;
-struct node *pTail;
+struct node *head = NULL;
+struct node *current = NULL;
 
 
 char board[8][8] ;
@@ -17,6 +23,83 @@ int Rl;
 int Rr;
 int rl;
 int rr;
+
+
+void storemove(char p, int ifchecked, char startorPlay){
+
+    struct node *t;
+    t = (struct node*)malloc(sizeof(struct node));
+    printf("create node\n") ;
+
+    for(int i=0 ; i<8 ; i++){
+        for(int j=0 ; j<8 ; j++){
+            t->chess[i][j] = board[i][j] ;
+    }}
+    t->player = p ;
+    t->Rl = Rl ;
+    t->rl = rl ;
+    t->Rr = Rr ;
+    t->rr = rr ;
+    t->ifchecked = ifchecked ;
+    printf("storing data node\n") ;
+
+    if (startorPlay=='s'){  //Start game
+        printf("at if\n") ;
+        t->next = NULL ;
+        t->prev = NULL ;
+        head = t ;
+        current = head ;
+        printf("after if\n") ;
+
+    }else if(startorPlay=='p'){ // play in game
+        current->next = t ;
+        t ->prev = current ;
+        t ->next = NULL ;
+        current = t ;
+    }
+}
+
+int undoRedo(char unRedo, char *p, int *ifchecked){
+    if(unRedo=='u'){  // undo
+        if(current->prev != NULL){
+            current = current->prev ;
+        }else{
+            return 0;
+        }
+    }else if(unRedo=='r'){  // redo
+        if(current->next != NULL){
+            current = current->next ;
+        }else{
+            return 0;
+        }
+    }
+    for(int i=0 ; i<8 ; i++){
+        for(int j=0 ; j<8 ; j++){
+            board[i][j] = current->chess[i][j] ;
+    }}
+
+    *p = current->player ;
+    Rl = current->Rl ;
+    rl = current->rl ;
+    Rr = current->Rr ;
+    rr = current->rr ;
+    Rl = current->Rl ;
+    *ifchecked = current->ifchecked ;
+
+}
+
+
+void printstored(){
+    printf("%c\n",current->player) ;
+    for(int i=0 ; i<8 ; i++){
+        for(int j=0 ; j<8 ; j++){
+            printf("%c ",current->chess[i][j]) ;
+        }
+        printf("\n") ;
+    }
+
+}
+
 
 
 
