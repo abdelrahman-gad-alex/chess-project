@@ -306,9 +306,10 @@ int x=1;
 
         }
     else if (movej == 6 && movefj== 4){
-        pw[movei]=1;
         x=1;
-
+        if(board[4][movei+1]=='P'||board[4][movei-1]=='P'){
+        pw[movei]=1;
+        }
     }
     else if (movefj==0&&pro !='\0'){
         x=1;
@@ -352,8 +353,9 @@ int x=1;
         }
     else if (movej == 1 && movefj== 3 && movei==movefi){
         x=1;
+        if(board[3][movei+1]=='p'||board[3][movei-1]=='p'){
         pb[movei]=1;
-    }
+    }}
     else if (movefj==7&&pro !='\0'){
     x=1;
         board[movej][movei]=toupper(pro);
