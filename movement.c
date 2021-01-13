@@ -5,7 +5,9 @@ int Rl=0;
 int Rr=0;
 int rl=0;
 int rr=0;
-
+int R[4];
+int pw[8];
+int pb[8];
 char board[8][8] ;
 
 
@@ -150,7 +152,7 @@ int x=1;
     if (abs(movefi-movei)<=1&&abs(movefj-movej)<=1){
         x=1;
     }
-    else if(((~rl)||(~Rl))&&(movej==movefj&&movefi==2)){
+      else if(((!R[2])&&movefj==movej&&movej==7&&movefi==2&&movei==4)||((!R[0])&&movefj==movej&&movej==0&&movefi==2&&movei==4)){
             x=1;
             for (int i=3;i>0;i-- ){
                 if ((board[movej][i]>'a'&&board[movej][i]<'z')||(board[movej][i]>'A'&&board[movej][i]<'Z')){
@@ -160,7 +162,7 @@ int x=1;
     movement(movej,0,movefj,3);
     }
     }
-    else if(((~rr)||(~Rr))&&(movej==movefj&&movefi==6)){
+      else if(((!(R[3]))&&movefj==movej&&movej==7&&movefi==6&&movei==4)||((!(R[1]))&&movefj==movej&&movej==0&&movefi==6&&movei==4)){
             x=1;
 
             for (int i=6;i>4;i-- ){
@@ -183,6 +185,7 @@ if(pro !='\0'){
 return x;
 
 }
+
 
 
 int CheckQueen(int movej, int movei,int movefj, int movefi, char pro)
@@ -286,12 +289,26 @@ int x=1;
     }
      else if (movefj==0&&pro =='\0'){
         x=0;
+
     }
     else{
         x=1;
     }}
-    else if (movej == 6 && movefj== 4){
+        else if ((movej) == 3 && movefj == 2 && abs(movei-movefi)==1&&board[3][movefi]>'A'&&board[3][movefi]<'Z'&&pb[movefi]){
         x=1;
+        if ((movefi+3)%2==0){
+        board[3][movefi]='-';
+        }
+        else{
+        board[3][movefi]='.';
+
+        }
+
+        }
+    else if (movej == 6 && movefj== 4){
+        pw[movei]=1;
+        x=1;
+
     }
     else if (movefj==0&&pro !='\0'){
         x=1;
@@ -322,8 +339,20 @@ int x=1;
     else{
         x=1;
     }}
-    else if (movej == 1 && movefj== 3){
+    else if ((movej) == 4 && movefj == 5 && abs(movei-movefi)==1&&board[4][movefi]>'a'&&board[4][movefi]<'z'&&pw[movefi]){
         x=1;
+        if ((movefi+4)%2==0){
+        board[4][movefi]='-';
+        }
+        else{
+        board[4][movefi]='.';
+
+        }
+
+        }
+    else if (movej == 1 && movefj== 3 && movei==movefi){
+        x=1;
+        pb[movei]=1;
     }
     else if (movefj==7&&pro !='\0'){
     x=1;
@@ -414,27 +443,26 @@ void CheckCastling()
 {
 
 if (board[0][0]!='R'){
-    Rl=1;
+    R[0]=1;
 }
 if (board[0][7]!='R'){
-    Rr=1;
+    R[1]=1;
 }
 if (board[7][0]!='r'){
-    rl=1;
+    R[2]=1;
 }
 if (board[7][7]!='r'){
-    rr=1;
+    R[3]=1;
 }
 if (board[0][4]!='K'){
-    Rr=1;
-    Rl=1;
+    R[0]=1;
+    R[1]=1;
 }
 if (board[7][4]!='k'){
-    rr=1;
-    rl=1;
+    R[2]=1;
+    R[3]=1;
 }
 }
-
 
 
 

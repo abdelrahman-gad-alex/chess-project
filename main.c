@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<conio.h>
+int R[4]={0,0,0,0};
+int pw[8]={0,0,0,0,0,0,0,0};
+int pb[8]={0,0,0,0,0,0,0,0};
 /*
                     { 'R' , 'N' , 'B' , 'Q' , 'K' , 'B' , 'N' , 'R' },
                     { 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' },
@@ -59,7 +62,19 @@ void inputCheck(int *x,int *movei,int *movej,int *movefi,int *movefj,char piece)
         }
     else if(move[0]=='s'&&move[1]=='a'&&move[2]=='v'&&move[3]=='e'&&move[4]=='\0'){
         save();
-        *x=1;
+        char t[1];
+        while(1){
+            printf("Continue(Y/N):");
+            gets(t);
+            if (tolower(t[0])=='y'){
+                *x=0;
+                break;
+                }
+            if (tolower(t[0])=='n'){
+                *x=1;
+                break;
+                }
+            }
         break;
     }
     else if(move[0]=='l'&&move[1]=='o'&&move[2]=='a'&&move[3]=='d'&&move[4]=='\0'){
