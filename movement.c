@@ -275,7 +275,7 @@ return x;
 int CheckPawnW(int movej, int movei,int movefj, int movefi,char pro)
 {
 int x=1;
-    if (movei==movefi&&(movej-movefj)==1&&movefj!=0&&pro=='\0'){
+    if (movei==movefi&&(movej-movefj)==1&&movefj!=0&&pro=='\0'&&(board[movefj][movefi]=='.'||board[movefj][movefi]=='-')){
         x=1;
     }
     else if ((movej-movefj)==1&&abs(movei-movefi)==1&&board[movefj][movefi]>'A'&&board[movefj][movefi]<'Z'){
@@ -289,7 +289,8 @@ int x=1;
     }
     else{
         x=1;
-    }}
+    }
+    }
         else if ((movej) == 3 && movefj == 2 && abs(movei-movefi)==1&&board[3][movefi]=='P'&&pb[movefi]){
         x=1;
         y=1;
@@ -302,13 +303,13 @@ int x=1;
         }
 
         }
-    else if (movej == 6 && movefj== 4){
+    else if (movej == 6 && movefj== 4&&movei==movefi&&(board[movefj][movefi]=='.'||board[movefj][movefi]=='-')){
         x=1;
         if(board[4][movei+1]=='P'||board[4][movei-1]=='P'){
         pw[movei]=1;
         }
     }
-    else if (movefj==0&&pro !='\0'){
+    else if (movefj==0&&pro !='\0'&&movei==movefi){
         x=1;
         board[movej][movei]=tolower(pro);
     }
@@ -323,7 +324,7 @@ int x=1;
 int CheckPawnB(int movej, int movei,int movefj, int movefi,char pro)
 {
 int x=1;
-    if (movei==movefi&&(movefj-movej)==1&&movefj!=7&&pro=='\0'){
+    if (movei==movefi&&(movefj-movej)==1&&movefj!=7&&pro=='\0'&&(board[movefj][movefi]=='.'||board[movefj][movefi]=='-')){
         x=1;
     }
     else if ((movefj-movej)==1&&abs(movei-movefi)==1&&board[movefj][movefi]>'a'&&board[movefj][movefi]<'z'){
@@ -349,7 +350,7 @@ int x=1;
         }
 
         }
-    else if (movej == 1 && movefj== 3 && movei==movefi){
+    else if (movej == 1 && movefj== 3 && movei==movefi&&(board[movefj][movefi]=='.'||board[movefj][movefi]=='-')){
         x=1;
         if(board[3][movei+1]=='p'||board[3][movei-1]=='p'){
         pb[movei]=1;

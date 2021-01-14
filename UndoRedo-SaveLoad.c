@@ -108,7 +108,7 @@ void printstored(){
 
 
 
-void save(){
+void save(char piece){
 char file1[100];
 printf("Enter the name of the save file\n");
 gets(file1);
@@ -128,13 +128,13 @@ for (int i=0;i<8;i++){
 for (int i=0;i<8;i++){
     fputc((pb[i]+'0'), fp);
 }
-
+fputc(piece,fp);
 fclose(fp);
 
 }
 
 
-void load(){
+void load(char *piece){
 char c,name[100];
 int i=0,j=0;
 printf("Enter the name of the load file\n");
@@ -173,12 +173,14 @@ printf("Not found.\n");
         continue;
 
         }
-    if(i>=20){
+    if(i>=20&&i<28){
         pb[i-20]= c-'0';
         i++;
         continue;
-
         }
+    if (i==28){
+        *piece=c;
+    }
     }
     fclose(fr);
 
