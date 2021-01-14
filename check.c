@@ -7,7 +7,9 @@ int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char p
 void movement (int movej, int movei,int movefj, int movefi) ;
 
 char board[8][8] ;
-
+int y ;
+int pw[8];
+int pb[8];
 
 struct pieces{
     int k[2] ;
@@ -85,7 +87,7 @@ int checked(char p){
 }
 
 
-int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi){
+int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro){
     if(movei<0 || movei >7 || movej<0 || movej >7 || movefi<0 || movefi >7 || movefj<0 || movefj >7){
         return 1 ;
     }
@@ -95,12 +97,26 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi){
     for(int n=0 ; n<3 ; n++){
         storeCheckBy[n] = checkby[n] ;
     }
-    if(CheckMovement(movej, movei, movefj, movefi, p,'\0')){
+
+    if(CheckMovement(movej, movei, movefj, movefi, p,pro)){
         movement(movej,movei,movefj,movefi) ;
         int r ;
         r = checked(p) ;
+
         board[movej][movei] = start ;
         board[movefj][movefi] = finish;
+        if (y){     // embassont happened
+            printf("in\n") ;
+            if(start=='p'){
+                board[movej][movefi] = 'P' ;
+                pb[movefi] = 1;
+            }else{
+                board[movej][movefi] = 'p' ;
+                pw[movefi] = 1;
+            }
+        }
+        y=0 ;
+
         for(int n=0 ; n<3 ; n++){
             checkby[n] = storeCheckBy[n] ;
         }
@@ -140,7 +156,7 @@ int checkmate(char p){
             if(x==0 && y==0){
                 continue ;
             }
-            if(tempMoveCheck(p, i, j, i+x, j+y)-1){
+            if(tempMoveCheck(p, i, j, i+x, j+y,'\0')-1){
                 return 0 ;
             }
         }
@@ -155,7 +171,16 @@ int checkmate(char p){
     for(int x=0 ; x<current->NOp ; x++){
         a = current->places[x][0] ;
         b = current->places[x][1] ;
-        if (tempMoveCheck(p, a, b,ich, jch)-1){
+        char piece = board[a][b] ;
+        if(piece=='p' && a==1){
+            if (tempMoveCheck(p, a, b,ich, jch,'q')-1){
+                return 0 ;
+            }
+        }else if(piece=='P' && a==6){
+            if (tempMoveCheck(p, a, b,ich, jch,'Q')-1){
+                return 0 ;
+            }
+        }else if (tempMoveCheck(p, a, b,ich, jch,'\0')-1){
             return 0 ;
         }
     }
@@ -174,7 +199,7 @@ int checkmate(char p){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
                 b = current->places[x][1] ;
-                if (tempMoveCheck(p, a, b,i, y)-1){
+                if (tempMoveCheck(p, a, b,i, y,'\0')-1){
                     return 0 ;
                 }
             }
@@ -184,7 +209,17 @@ int checkmate(char p){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
                 b = current->places[x][1] ;
-                if (tempMoveCheck(p, a, b, y, j)-1){
+                char piece = board[a][b] ;
+                if(piece=='p' && a==1){
+                    if (tempMoveCheck(p, a, b, y, j,'q')-1){
+                        return 0 ;
+                    }
+                }else if(piece=='P' && a==6){
+                    if (tempMoveCheck(p, a, b, y, j,'Q')-1){
+                        return 0 ;
+                    }
+                }
+                if (tempMoveCheck(p, a, b, y, j,'\0')-1){
                     return 0 ;
                 }
             }
@@ -194,7 +229,7 @@ int checkmate(char p){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
                 b = current->places[x][1] ;
-                if (tempMoveCheck(p, a, b,mMi[0]+y ,mMj[0]+y )-1){
+                if (tempMoveCheck(p, a, b,mMi[0]+y ,mMj[0]+y ,'\0')-1){
                     return 0 ;
                 }
             }
@@ -204,7 +239,7 @@ int checkmate(char p){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
                 b = current->places[x][1] ;
-                if (tempMoveCheck(p, a, b,mMi[0]+y ,mMj[1]-y )-1){
+                if (tempMoveCheck(p, a, b,mMi[0]+y ,mMj[1]-y ,'\0')-1){
                     return 0 ;
                 }
             }
@@ -277,7 +312,7 @@ int stalemate(char p){
             if(x==0 && y==0){
                 continue ;
             }
-            if(tempMoveCheck(p, i, j, i+x, j+y)==0){
+            if(tempMoveCheck(p, i, j, i+x, j+y,'\0')==0){
                 return 0 ;
             }
         }
@@ -290,29 +325,37 @@ int stalemate(char p){
             continue ;
         }
         if (board[i][j]=='b' || board[i][j]=='q' || board[i][j]=='B' || board[i][j]=='Q' ){
-            if(tempMoveCheck(p, i, j, i+1, j+1)==0 || tempMoveCheck(p, i, j, i-1, j+1)==0 || tempMoveCheck(p, i, j, i+1, j-1)==0 ||tempMoveCheck(p, i, j, i-1, j-1)==0 ){
+            if(tempMoveCheck(p, i, j, i+1, j+1,'\0')==0 || tempMoveCheck(p, i, j, i-1, j+1,'\0')==0 || tempMoveCheck(p, i, j, i+1, j-1,'\0')==0 ||tempMoveCheck(p, i, j, i-1, j-1,'\0')==0 ){
                 return 0 ;
             }
         }
         if (board[i][j]=='r' || board[i][j]=='q' || board[i][j]=='R' || board[i][j]=='Q' ){
-            if(tempMoveCheck(p, i, j, i+1, j)==0 || tempMoveCheck(p, i, j, i-1, j)==0 || tempMoveCheck(p, i, j, i, j+1)==0 ||tempMoveCheck(p, i, j, i, j-1)==0 ){
+            if(tempMoveCheck(p, i, j, i+1, j,'\0')==0 || tempMoveCheck(p, i, j, i-1, j,'\0')==0 || tempMoveCheck(p, i, j, i, j+1,'\0')==0 ||tempMoveCheck(p, i, j, i, j-1,'\0')==0 ){
                 return 0 ;
             }
         }else if (board[i][j]=='n' || board[i][j]=='N'){
             for(int x=-2 ; x<3 ; x++){
                 for(int y=-3 ; y<3 ; y++){
                     if (x*y == 2 || x*y == -2){
-                        if(tempMoveCheck(p, i, j, i+x, j+y)==0){
+                        if(tempMoveCheck(p, i, j, i+x, j+y,'\0')==0){
                             return 0 ;
                     }}
                 }
             }
         }else if (board[i][j]=='p'){
-            if(tempMoveCheck(p, i, j, i-1, j)==0 || tempMoveCheck(p, i, j, i-1, j-1)==0 || tempMoveCheck(p, i, j, i-1, j+1)==0 ){
+            char pro ='\0';
+            if (j==1){
+                pro = 'q' ;
+            }
+            if(tempMoveCheck(p, i, j, i-1, j,pro)==0 || tempMoveCheck(p, i, j, i-1, j-1,pro)==0 || tempMoveCheck(p, i, j, i-1, j+1,pro)==0 ){
                 return 0 ;
             }
         }else if (board[i][j]=='P'){
-            if(tempMoveCheck(p, i, j, i+1, j)==0 || tempMoveCheck(p, i, j, i+1, j-1)==0 || tempMoveCheck(p, i, j, i+1, j+1)==0 ){
+            char pro ='\0';
+            if (j==6){
+                pro = 'Q' ;
+            }
+            if(tempMoveCheck(p, i, j, i+1, j,pro)==0 || tempMoveCheck(p, i, j, i+1, j-1,pro)==0 || tempMoveCheck(p, i, j, i+1, j+1,pro)==0 ){
                 return 0 ;
             }
         }

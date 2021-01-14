@@ -6,10 +6,9 @@ struct node
 {
 	char chess[8][8];
 	char player ;
-	int Rl;
-    int Rr;
-    int rl;
-    int rr;
+    int R[4];
+    int pw[8];
+    int pb[8];
     int ifchecked ;
 	struct node *next;
 	struct node *prev;
@@ -19,37 +18,35 @@ struct node *current = NULL;
 
 
 char board[8][8] ;
-int Rl;
-int Rr;
-int rl;
-int rr;
 
+int R[4]={0,0,0,0};
+int pw[8]={0,0,0,0,0,0,0,0};
+int pb[8]={0,0,0,0,0,0,0,0};
 
 void storemove(char p, int ifchecked, char startorPlay){
 
     struct node *t;
     t = (struct node*)malloc(sizeof(struct node));
-    printf("create node\n") ;
 
     for(int i=0 ; i<8 ; i++){
         for(int j=0 ; j<8 ; j++){
             t->chess[i][j] = board[i][j] ;
     }}
+    for(int i=0 ; i<8 ; i++){
+        t->pw[i] = pw[i] ;
+        t->pb[i] = pb[i] ;
+    }
+    for(int i=0 ; i<4 ; i++){
+        t->R[i] = R[i] ;
+    }
     t->player = p ;
-    t->Rl = Rl ;
-    t->rl = rl ;
-    t->Rr = Rr ;
-    t->rr = rr ;
     t->ifchecked = ifchecked ;
-    printf("storing data node\n") ;
 
     if (startorPlay=='s'){  //Start game
-        printf("at if\n") ;
         t->next = NULL ;
         t->prev = NULL ;
         head = t ;
         current = head ;
-        printf("after if\n") ;
 
     }else if(startorPlay=='p'){ // play in game
         current->next = t ;
@@ -79,16 +76,18 @@ int undoRedo(char unRedo, char *p, int *ifchecked){
     }}
 
     *p = current->player ;
-    Rl = current->Rl ;
-    rl = current->rl ;
-    Rr = current->Rr ;
-    rr = current->rr ;
-    Rl = current->Rl ;
+    for(int i=0 ; i<8 ; i++){
+        pw[i] = current->pw[i] ;
+        pb[i] =current->pb[i] ;
+    }
+    for(int i=0 ; i<4 ; i++){
+        R[i] = current->R[i] ;
+    }
     *ifchecked = current->ifchecked ;
-
+    return 1 ;
 }
 
-
+/*
 void printstored(){
     printf("%c\n",current->player) ;
     for(int i=0 ; i<8 ; i++){
@@ -97,90 +96,93 @@ void printstored(){
         }
         printf("\n") ;
     }
-
-}
-
-
-
-
-void save(){
-    char file1[100];
-    printf("Enter the name of the save file\n");
-    gets(file1);
-    FILE *fp;
-    fp  = fopen (file1, "w");
-    for (int i=0;i<8;i++){
-        for (int j=0;j<8;j++){
-            fputc(board[i][j], fp);
-            }
-        }
-    for(int i=0;i<4;i++){
-        switch(i){
-        case (0):
-            fputc((Rl+'0'), fp);
-            break;
-        case (1):
-            fputc((Rr+'0'), fp);
-            break;
-        case (2):
-            fputc((rl+'0'), fp);
-            break;
-        case (3):
-            fputc((rr+'0'), fp);
-            break;
-
-    }}
-    fclose(fp);
-
-}
-
-
-
-void load(){
-    char c,name[100];
-    int i=0,j=0;
-    printf("Enter the name of the load file\n");
-    FILE *fr;
-    while (1){
-        gets(name);
-        fr=fopen(name,"r");
-        if (fr){
-             break;
-        }else{
-            printf("Not found.\n");
-        }
-
+    for(int i=0 ; i<8 ; i++){
+        printf("%d ",current->pw[i]) ;
+        printf("%d ",current->pb[i]) ;
     }
+    for(int i=0 ; i<4 ; i++){
+        printf("%d ",current->R[i]) ;
+    }
+}
+*/
+
+
+
+void save(char piece){
+char file1[100];
+printf("Enter the name of the save file\n");
+gets(file1);
+FILE *fp;
+fp  = fopen (file1, "w");
+for (int i=0;i<8;i++){
+    for (int j=0;j<8;j++){
+        fputc(board[i][j], fp);
+        }
+    }
+for (int i=0;i<4;i++){
+    fputc((R[i]+'0'), fp);
+}
+for (int i=0;i<8;i++){
+    fputc((pw[i]+'0'), fp);
+}
+for (int i=0;i<8;i++){
+    fputc((pb[i]+'0'), fp);
+}
+fputc(piece,fp);
+fclose(fp);
+
+}
+
+
+void load(char *piece){
+char c,name[100];
+int i=0,j=0;
+printf("Enter the name of the load file\n");
+FILE *fr;
+while (1){
+gets(name);
+fr=fopen(name,"r");
+if (fr){
+     break;
+}
+
+else{
+printf("Not found.\n");
+}
+
+}
     while ((c = getc(fr)) != EOF) {
-        if(i<8&&j<8){
-            (board[i][j]= c);
-             j++;
-             if (j==8){
-                i++;
-                j=0;
-         }}else{
-            switch(i){
-                case 8 :
-                    Rl=c-'0';
-                    i++;
-                    break;
-                case 9 :
-                    Rr=c-'0';
-                    i++;
-                    break;
-                case 10 :
-                    rl=c-'0';
-                    i++;
-                    break;
-                case 11 :
-                    rr=c-'0';
-                    i++;
-                    break;
-         }
-         }
+    if(i<8&&j<8){
+    (board[i][j]= c);
+     j++;
+     if (j==8)   {
+        i++;
+        j=0;
+        continue;
+
+     }}
+    if(i>=8&&i<12){
+        R[i-8]= c-'0';
+        i++;
+        continue;
+
+        }
+    if(i>=12&&i<20){
+        pw[i-12]= c-'0';
+        i++;
+        continue;
+
+        }
+    if(i>=20&&i<28){
+        pb[i-20]= c-'0';
+        i++;
+        continue;
+        }
+    if (i==28){
+        *piece=c;
+    }
     }
     fclose(fr);
 
 }
-
 
