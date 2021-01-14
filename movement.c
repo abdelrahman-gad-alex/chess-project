@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-int Rl=0;
-int Rr=0;
-int rl=0;
-int rr=0;
+int y;
 int R[4];
 int pw[8];
 int pb[8];
@@ -277,7 +274,6 @@ return x;
 
 int CheckPawnW(int movej, int movei,int movefj, int movefi,char pro)
 {
-
 int x=1;
     if (movei==movefi&&(movej-movefj)==1&&movefj!=0&&pro=='\0'){
         x=1;
@@ -294,8 +290,9 @@ int x=1;
     else{
         x=1;
     }}
-        else if ((movej) == 3 && movefj == 2 && abs(movei-movefi)==1&&board[3][movefi]>'A'&&board[3][movefi]<'Z'&&pb[movefi]){
+        else if ((movej) == 3 && movefj == 2 && abs(movei-movefi)==1&&board[3][movefi]=='P'&&pb[movefi]){
         x=1;
+        y=1;
         if ((movefi+3)%2==0){
         board[3][movefi]='-';
         }
@@ -340,8 +337,9 @@ int x=1;
     else{
         x=1;
     }}
-    else if ((movej) == 4 && movefj == 5 && abs(movei-movefi)==1&&board[4][movefi]>'a'&&board[4][movefi]<'z'&&pw[movefi]){
+    else if ((movej) == 4 && movefj == 5 && abs(movei-movefi)==1&&board[4][movefi]=='b'&&pw[movefi]){
         x=1;
+        y=1;
         if ((movefi+4)%2==0){
         board[4][movefi]='-';
         }

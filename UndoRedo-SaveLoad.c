@@ -6,10 +6,9 @@ struct node
 {
 	char chess[8][8];
 	char player ;
-	int Rl;
-    int Rr;
-    int rl;
-    int rr;
+    int R[4];
+    int pw[8];
+    int pb[8];
     int ifchecked ;
 	struct node *next;
 	struct node *prev;
@@ -19,39 +18,35 @@ struct node *current = NULL;
 
 
 char board[8][8] ;
-int Rl;
-int Rr;
-int rl;
-int rr;
-int R[4];
-int pw[8];
-int pb[8];
+
+int R[4]={0,0,0,0};
+int pw[8]={0,0,0,0,0,0,0,0};
+int pb[8]={0,0,0,0,0,0,0,0};
 
 void storemove(char p, int ifchecked, char startorPlay){
 
     struct node *t;
     t = (struct node*)malloc(sizeof(struct node));
-    printf("create node\n") ;
 
     for(int i=0 ; i<8 ; i++){
         for(int j=0 ; j<8 ; j++){
             t->chess[i][j] = board[i][j] ;
     }}
+    for(int i=0 ; i<8 ; i++){
+        t->pw[i] = pw[i] ;
+        t->pb[i] = pb[i] ;
+    }
+    for(int i=0 ; i<4 ; i++){
+        t->R[i] = R[i] ;
+    }
     t->player = p ;
-    t->Rl = Rl ;
-    t->rl = rl ;
-    t->Rr = Rr ;
-    t->rr = rr ;
     t->ifchecked = ifchecked ;
-    printf("storing data node\n") ;
 
     if (startorPlay=='s'){  //Start game
-        printf("at if\n") ;
         t->next = NULL ;
         t->prev = NULL ;
         head = t ;
         current = head ;
-        printf("after if\n") ;
 
     }else if(startorPlay=='p'){ // play in game
         current->next = t ;
@@ -81,11 +76,13 @@ int undoRedo(char unRedo, char *p, int *ifchecked){
     }}
 
     *p = current->player ;
-    Rl = current->Rl ;
-    rl = current->rl ;
-    Rr = current->Rr ;
-    rr = current->rr ;
-    Rl = current->Rl ;
+    for(int i=0 ; i<8 ; i++){
+        pw[i] = current->pw[i] ;
+        pb[i] =current->pb[i] ;
+    }
+    for(int i=0 ; i<4 ; i++){
+        R[i] = current->R[i] ;
+    }
     *ifchecked = current->ifchecked ;
 
 }
@@ -99,7 +96,13 @@ void printstored(){
         }
         printf("\n") ;
     }
-
+    for(int i=0 ; i<8 ; i++){
+        printf("%d ",current->pw[i]) ;
+        printf("%d ",current->pb[i]) ;
+    }
+    for(int i=0 ; i<4 ; i++){
+        printf("%d ",current->R[i]) ;
+    }
 }
 
 
