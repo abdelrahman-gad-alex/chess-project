@@ -7,7 +7,9 @@ int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char p
 void movement (int movej, int movei,int movefj, int movefi) ;
 
 char board[8][8] ;
-
+int y ;
+int pw[8];
+int pb[8];
 
 struct pieces{
     int k[2] ;
@@ -95,12 +97,26 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro)
     for(int n=0 ; n<3 ; n++){
         storeCheckBy[n] = checkby[n] ;
     }
+
     if(CheckMovement(movej, movei, movefj, movefi, p,pro)){
         movement(movej,movei,movefj,movefi) ;
         int r ;
         r = checked(p) ;
+
         board[movej][movei] = start ;
         board[movefj][movefi] = finish;
+        if (y){     // embassont happened
+            printf("in\n") ;
+            if(start=='p'){
+                board[movej][movefi] = 'P' ;
+                pb[movefi] = 1;
+            }else{
+                board[movej][movefi] = 'p' ;
+                pw[movefi] = 1;
+            }
+        }
+        y=0 ;
+
         for(int n=0 ; n<3 ; n++){
             checkby[n] = storeCheckBy[n] ;
         }

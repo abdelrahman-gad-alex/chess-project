@@ -84,10 +84,10 @@ int undoRedo(char unRedo, char *p, int *ifchecked){
         R[i] = current->R[i] ;
     }
     *ifchecked = current->ifchecked ;
-
+    return 1 ;
 }
 
-
+/*
 void printstored(){
     printf("%c\n",current->player) ;
     for(int i=0 ; i<8 ; i++){
@@ -104,7 +104,7 @@ void printstored(){
         printf("%d ",current->R[i]) ;
     }
 }
-
+*/
 
 
 

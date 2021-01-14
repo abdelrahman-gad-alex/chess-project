@@ -338,7 +338,7 @@ int x=1;
     else{
         x=1;
     }}
-    else if ((movej) == 4 && movefj == 5 && abs(movei-movefi)==1&&board[4][movefi]=='b'&&pw[movefi]){
+    else if ((movej) == 4 && movefj == 5 && abs(movei-movefi)==1&&board[4][movefi]=='p'&&pw[movefi]){
         x=1;
         y=1;
         if ((movefi+4)%2==0){
