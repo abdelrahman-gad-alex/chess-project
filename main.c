@@ -15,21 +15,21 @@
 
 
 char board[8][8] = {
-                    { '-' , 'K' , '.' , '.' , '-' , '.' , '-' , '.' },
-                    { '.' , '-' , '-' , '-' , '.' , '-' , '.' , 'p' },
+                    { 'R' , 'N' , 'B' , 'Q' , 'K' , 'B' , 'N' , 'R' },
+                    { 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' },
                     { '-' , '.' , '-' , '.' , '-' , '.' , '-' , '.' },
-                    { '.' , '-' , 'Q' , 'B' , 'B' , '.' , '.' , '-' },
-                    { '-' , '.' , '-' , '.' , '-' , '.' , '.' , '.' },
-                    { '.' , '-' , 'p' , '.' , '.' , '-' , '.' , '-' },
-                    { '-' , 'k' , '-' , '.' , '-' , '.' , '-' , '.' },
-                    { 'b' , '-' , '.' , 'Q' , '.' , '-' , '.' , '.' }};
+                    { '.' , '-' , '.' , '-' , '.' , '-' , '.' , '-' },
+                    { '-' , '.' , '-' , '.' , '-' , '.' , '-' , '.' },
+                    { '.' , '-' , '.' , '-' , '.' , '-' , '.' , '-' },
+                    { 'p' , 'p' , 'p' , 'p' , 'p' , 'p' , 'p' , 'p' },
+                    { 'r' , 'n' , 'b' , 'q' , 'k' , 'b' , 'n' , 'r' }};
 
 
 void CheckCastling();
 int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char pro) ;
 
 int checked(char p) ;
-int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi) ;
+int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi,char pro) ;
 int checkmate(char p) ;
 int stalemate(char p);
 
@@ -40,55 +40,6 @@ void load();
 
 void printstored();
 
-/*
-void inputCheck(int *x,int *movei,int *movej,int *movefi,int *movefj,char piece){
-    char move[5];
-    while (1){
-
-    gets(move);
-    *movei=(tolower(move[0])-'a');
-//    *movej=(move[1]-'0')-1;
-    *movej=('8'-move[1]);
-    *movefi=(tolower(move[2])-'a');
-//    *movefj=(move[3]-'0')-1;
-    *movefj=('8'-move[3]);
-
-    if (((tolower(move[0])<='h'&& tolower(move[0])>='a')&&(move[1]-'0')<9&& (move[1]-'0')>0&&(tolower(move[2])<='h'&& tolower(move[2])>='a')&&(move[3]-'0')<9&& (move[3]-'0')>0)&&(move[0]!=move[2]||(move[1]-'0')!=(move[3]-'0'))&&(tolower(move[4])=='n'||tolower(move[4])=='r'||tolower(move[4])=='b'||tolower(move[4])=='q'||move[4]=='\0')){
-        if (CheckMovement( *movej,  *movei, *movefj,  *movefi ,piece ,move[4])){
-            printf("%d,%d,%d,%d",*movej, *movei, *movefj, *movefi);
-
-            break;
-        }
-    printf("Enter Move Correctly\n");
-        }
-    else if(move[0]=='s'&&move[1]=='a'&&move[2]=='v'&&move[3]=='e'&&move[4]=='\0'){
-        save();
-        char t[1];
-        while(1){
-            printf("Continue(Y/N):");
-            gets(t);
-            if (tolower(t[0])=='y'){
-                *x=0;
-                break;
-                }
-            if (tolower(t[0])=='n'){
-                *x=1;
-                break;
-                }
-            }
-        break;
-    }
-    else if(move[0]=='l'&&move[1]=='o'&&move[2]=='a'&&move[3]=='d'&&move[4]=='\0'){
-        load();
-        *x=0;
-        break;
-    }
-    else{
-    printf("Enter Move Correctly\n");
-    }
-}
-}
-*/
 void printBoard()
 {
 
@@ -104,32 +55,58 @@ for (int i=0;i<8;i++){
 
 
 int main(){
+    char sl[5];
+    int exit=0;
+    int ifchecked ;
     int movei=0,movej=0, movefi=0,movefj=0,x=0;
     char piece = 'w';
+    printf("(start/load)\nMake Your Choice\n");
+    while(1){
+    gets(sl);
+    if(sl[0]=='l'&&sl[1]=='o'&&sl[2]=='a'&&sl[3]=='d'&&sl[4]=='\0'){
+        load();
+        break;
+    }
+    else if(sl[0]=='s'&&sl[1]=='t'&&sl[2]=='a'&&sl[3]=='r'&&sl[4]=='t'&&sl[5]=='\0'){
+        break;
+    }
+    printf("(start/load)\nMake Your Choice correctly %c\n",7);
+
+    }
+
+
+    ifchecked = checked(piece);
+    storemove(piece, ifchecked, 's') ;
+
+
+
+
+
+
+while (!exit){
     printBoard();
     CheckCastling();
-    int ifchecked ;
-    storemove(piece, ifchecked, 's') ;
-    printstored() ;
 
-    printf("Enter Move \n");
+/////////////////input check///////////
+
+    printf("\nEnter Move \n");
         char move[5];
     while (1){
 
     gets(move);
     movei=(tolower(move[0])-'a');
-//    *movej=(move[1]-'0')-1;
     movej=('8'-move[1]);
     movefi=(tolower(move[2])-'a');
-//    *movefj=(move[3]-'0')-1;
     movefj=('8'-move[3]);
 
     if (((tolower(move[0])<='h'&& tolower(move[0])>='a')&&(move[1]-'0')<9&& (move[1]-'0')>0&&(tolower(move[2])<='h'&& tolower(move[2])>='a')&&(move[3]-'0')<9&& (move[3]-'0')>0)&&(move[0]!=move[2]||(move[1]-'0')!=(move[3]-'0'))&&(tolower(move[4])=='n'||tolower(move[4])=='r'||tolower(move[4])=='b'||tolower(move[4])=='q'||move[4]=='\0')){
-        if (!tempMoveCheck(piece, movej,movei,movefj, movefi)){
-        if (CheckMovement( movej,  movei, movefj,  movefi ,piece ,move[4])){
-
+        if (!tempMoveCheck(piece, movej,movei,movefj, movefi,'\0')){
+            if (CheckMovement( movej,  movei, movefj,  movefi ,piece ,move[4])){
+            x=1;
             break;
-        }}
+        }
+
+        }
     printf("Enter Move Correctly\n");
         }
     else if(move[0]=='s'&&move[1]=='a'&&move[2]=='v'&&move[3]=='e'&&move[4]=='\0'){
@@ -139,35 +116,69 @@ int main(){
             printf("Continue(Y/N):");
             gets(t);
             if (tolower(t[0])=='y'){
+                exit=0;
                 x=0;
                 break;
                 }
             if (tolower(t[0])=='n'){
-                x=1;
+                exit=1;
+                x=0;
                 break;
                 }
             }
-        break;
-    }
-    else if(move[0]=='l'&&move[1]=='o'&&move[2]=='a'&&move[3]=='d'&&move[4]=='\0'){
-        load();
-        x=0;
         break;
     }
     else{
     printf("Enter Move Correctly\n");
     }
 }
+////////////end of input check////////////////
 
-    if (x==0){
-        printf("after move\n") ;
-        movement ( movej, movei, movefj, movefi );
+if (x){
+
+movement ( movej, movei, movefj, movefi );
+
+
+
+if(checked(piece)){
+    if(checkmate(piece)){
+        printf("Check Mate!\n");
+        if (piece=='w'){
+            printf ("Black Wins!\n");
+            }
+        else{
+            printf ("White Wins!\n");
+            }
+        exit=1;
+    }
+    else{
+    printf("Check\n");
+    ifchecked=1;
+    }
+}
+else if (stalemate(piece)){
+            printf("Draw\n");
+            exit=1;
+}
+else{
+    ifchecked=1;
+
+}
+
+
         storemove(piece, ifchecked, 'p') ;
-        printstored() ;
-        //printBoard();
+    if (piece=='w'){
+        piece='b';
+    }
+    else{
+        piece='w';
+    }
+
+}
 
 }
 }
+
 
 /*
 int main()

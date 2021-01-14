@@ -7,11 +7,11 @@ int pw[8];
 int pb[8];
 char board[8][8] ;
 
-
 void movement (int movej, int movei,int movefj, int movefi)
 {
 
 char temp=board[movej][movei];
+
 if ((movei+movej)%2==0){
     board[movej][movei]='-';
 }
