@@ -15,14 +15,14 @@
 
 
 char board[8][8] = {
-                    { '-' , 'N' , 'B' , '.' , 'K' , 'B' , 'N' , 'R' },
+                    { 'R' , 'N' , 'B' , 'Q' , 'K' , 'B' , 'N' , 'R' },
                     { 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' },
                     { '-' , '.' , '-' , '.' , '-' , '.' , '-' , '.' },
                     { '.' , '-' , '.' , '-' , '.' , '-' , '.' , '-' },
-                    { '-' , '.' , '-' , 'R' , '-' , '.' , '-' , '.' },
-                    { '.' , '-' , '.' , '-' , '.' , 'Q' , '.' , '-' },
-                    { 'p' , 'p' , 'p' , 'p' , '-' , '.' , 'p' , 'p' },
-                    { 'r' , 'n' , 'b' , '-' , 'k' , '-' , '.' , 'r' }};
+                    { '-' , '.' , '-' , '.' , '-' , '.' , '-' , '.' },
+                    { '.' , '-' , '.' , '-' , '.' , '-' , '.' , '-' },
+                    { 'p' , 'p' , 'p' , 'p' , 'p' , 'p' , 'p' , 'p' },
+                    { 'r' , 'n' , 'b' , 'q' , 'k' , 'b' , 'n' , 'r' }};
 
 
 void CheckCastling();
@@ -76,7 +76,7 @@ int main(){
     else if(sl[0]=='s'&&sl[1]=='t'&&sl[2]=='a'&&sl[3]=='r'&&sl[4]=='t'&&sl[5]=='\0'){
         break;
     }
-    printf("(start/load)\nMake Your Choice correctly %c\n",7);
+    printf("(start/load)\nMake Your Choice correctly \n",7);
 
     }
 
@@ -87,14 +87,11 @@ int main(){
 
 
 
+    printBoard();
 
 
 while (!exit){
-    printBoard();
     CheckCastling();
-    if (ifchecked){
-        printf("check!!\n");
-    }
 /////////////////input check///////////
 
     printf("\nEnter Move \n");
@@ -159,11 +156,12 @@ if (x){
 
 movement ( movej, movei, movefj, movefi );
 
+printBoard();
 
 
 if(checked(o)){
     if(checkmate(o)){
-        printf("Check Mate!\n");
+        printf("Check Mate!%c%c%c%c\n",7,7,7,7);
         if (o=='w'){
             printf ("Black Wins!\n");
             }
@@ -172,11 +170,12 @@ if(checked(o)){
             }
         exit=1;
     }else{
+    printf("Checked!!%c%c\n",7,7);
     ifchecked=1;
     }
 }
 else if (stalemate(o)){
-            printf("Draw\n");
+            printf("Draw%c%c%c%c\n",7,7,7,7);
             exit=1;
 }
 else{
