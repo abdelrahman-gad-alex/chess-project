@@ -49,7 +49,7 @@ void printBoard(){
     printf("     ") ;
     for (int i=0;i<8;i++){
         printf(" %c ",'A'+i) ;
-    }printf("\n") ;
+    }printf("\n\n") ;
 
     for (int i=0;i<8;i++){
         for (int j=-1;j<9;j++){
@@ -61,7 +61,7 @@ void printBoard(){
         }
         printf("\n");
     }
-    printf("     ") ;
+    printf("\n     ") ;
     for (int i=0;i<8;i++){
         printf(" %c ",'A'+i) ;
     }printf("\n") ;
@@ -99,7 +99,11 @@ int main(){
     while (!exit){
         CheckCastling();
     /////////////////input check///////////
-
+        if(piece=='w'){
+            printf("White:");
+        }else{
+            printf("black:");
+        }
         printf("\nEnter Move \n");
         char move[5];
         while (1){
@@ -197,7 +201,6 @@ int main(){
 
             }
 
-            storemove(piece, ifchecked, 'p') ;
             if (piece=='w'){
                 piece='b';
                 o = 'w';
@@ -205,6 +208,7 @@ int main(){
                 piece='w';
                 o = 'b';
             }
+            storemove(piece, ifchecked, 'p') ;
 
         }
 

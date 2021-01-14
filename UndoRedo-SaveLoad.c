@@ -76,6 +76,7 @@ int undoRedo(char unRedo, char *p, int *ifchecked){
     }}
 
     *p = current->player ;
+    printf("%c", current->player) ;
     for(int i=0 ; i<8 ; i++){
         pw[i] = current->pw[i] ;
         pb[i] =current->pb[i] ;
