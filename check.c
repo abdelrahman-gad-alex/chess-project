@@ -16,6 +16,12 @@ struct pieces{
     int places[16][2] ;
     int NOp ;
 }whitePieces , BlackPieces ;
+struct died
+{
+	char die[15];
+    int counter ;
+}wdied,bdied;
+
 
 int checkby[3] = {0,0,0} ;
 
@@ -97,6 +103,8 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro)
     for(int n=0 ; n<3 ; n++){
         storeCheckBy[n] = checkby[n] ;
     }
+    int wcount = wdied.counter ;
+    int bcount = bdied.counter ;
 
     if(CheckMovement(movej, movei, movefj, movefi, p,pro)){
         movement(movej,movei,movefj,movefi) ;
@@ -106,7 +114,6 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro)
         board[movej][movei] = start ;
         board[movefj][movefi] = finish;
         if (y){     // embassont happened
-            printf("in\n") ;
             if(start=='p'){
                 board[movej][movefi] = 'P' ;
                 pb[movefi] = 1;
@@ -116,6 +123,9 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro)
             }
         }
         y=0 ;
+
+        wdied.counter = wcount ;   //clear die
+        bdied.counter = bcount ;
 
         for(int n=0 ; n<3 ; n++){
             checkby[n] = storeCheckBy[n] ;

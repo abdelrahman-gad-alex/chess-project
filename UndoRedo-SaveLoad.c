@@ -10,6 +10,7 @@ struct node
     int pw[8];
     int pb[8];
     int ifchecked ;
+    int wdie , bdie ;
 	struct node *next;
 	struct node *prev;
 };
@@ -46,6 +47,8 @@ void storemove(char p, int ifchecked, char startorPlay){
     }
     t->player = p ;
     t->ifchecked = ifchecked ;
+    t->wdie = wdied.counter ;
+    t->bdie = bdied.counter ;
 
     if (startorPlay=='s'){  //Start game
         t->next = NULL ;
@@ -90,6 +93,10 @@ int undoRedo(char unRedo, char *p, int *ifchecked){
         R[i] = current->R[i] ;
     }
     *ifchecked = current->ifchecked ;
+    wdied.counter = current->wdie ;
+    bdied.counter = current->bdie  ;
+
+
     return 1 ;
 }
 

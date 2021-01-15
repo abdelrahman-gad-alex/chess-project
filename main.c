@@ -69,20 +69,24 @@ void printBoard(){
     printf("\n     ") ;
     for (int i=0;i<8;i++){
         printf(" %c ",'A'+i) ;
-    }printf("\n\n\n") ;
-    printf ("White died pieces :-\n");
+    }printf("\n\n") ;
 
-    for (int i=0;i<wdied.counter;i++){
-        printf ("%c  ",wdied.die[i]);
+    if(wdied.counter){
+        printf ("White died pieces :-");
+
+        for (int i=0;i<wdied.counter;i++){
+            printf (" %c ",wdied.die[i]);
+        }
     }
-    printf ("\nBlack died pieces :-\n");
+    if(bdied.counter){
+        printf ("\nBlack died pieces :-");
 
-    for (int i=0;i<bdied.counter;i++){
-        printf ("%c  ",bdied.die[i]);
+        for (int i=0;i<bdied.counter;i++){
+            printf (" %c ",bdied.die[i]);
 
+        }
+        printf("\n\n") ;
     }
-    printf("\n") ;
-
 
 
 }
@@ -128,7 +132,7 @@ int main(){
         }else{
             printf("black:");
         }
-        printf("\nEnter Move \n");
+        printf(" Enter Move \n");
         while (1){
         char move[100];
             gets(move);
@@ -140,13 +144,13 @@ int main(){
 
         // if entered move
          if (((tolower(move[0])<='h'&& tolower(move[0])>='a')&&(move[1]-'0')<9&& (move[1]-'0')>0&&(tolower(move[2])<='h'&& tolower(move[2])>='a')&&(move[3]-'0')<9&& (move[3]-'0')>0)&&(move[0]!=move[2]||(move[1]-'0')!=(move[3]-'0'))&&(tolower(move[4])=='n'||tolower(move[4])=='r'||tolower(move[4])=='b'||tolower(move[4])=='q'||move[4]=='\0')){
-  //              if (!tempMoveCheck(piece, movej,movei,movefj, movefi,move[4])){
+                if (!tempMoveCheck(piece, movej,movei,movefj, movefi,move[4])){
 
                     if (CheckMovement( movej,  movei, movefj,  movefi ,piece ,move[4])){
 
                         x=1;
                         break;
-  //                  }
+                    }
                 }
                 printf("Enter Move Correctly\n");
 
