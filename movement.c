@@ -312,6 +312,8 @@ int x=1;
         else if ((movej) == 3 && movefj == 2 && abs(movei-movefi)==1&&board[3][movefi]=='P'&&pb[movefi]){
         x=1;
         y=1;
+        bdied.die[bdied.counter]=board[3][movefi];
+        bdied.counter++;
         if ((movefi+3)%2==0){
         board[3][movefi]='-';
         }
@@ -359,6 +361,8 @@ int x=1;
     else if ((movej) == 4 && movefj == 5 && abs(movei-movefi)==1&&board[4][movefi]=='p'&&pw[movefi]){
         x=1;
         y=1;
+        wdied.die[wdied.counter]=board[4][movefi];
+        wdied.counter++;
         if ((movefi+4)%2==0){
         board[4][movefi]='-';
         }
