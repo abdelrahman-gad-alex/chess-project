@@ -16,6 +16,11 @@ struct node
 struct node *head = NULL;
 struct node *current = NULL;
 
+struct died
+{
+	char die[15];
+    int counter ;
+}wdied,bdied;
 
 char board[8][8] ;
 
@@ -130,6 +135,13 @@ for (int i=0;i<8;i++){
     fputc((pb[i]+'0'), fp);
 }
 fputc(piece,fp);
+for (int i=0;i<wdied.counter;i++){
+    fputc(wdied.die[i],fp);
+}
+for (int i=0;i<bdied.counter;i++){
+    fputc(bdied.die[i],fp);
+}
+
 fclose(fp);
 
 }
@@ -181,8 +193,22 @@ printf("Not found.\n");
         }
     if (i==28){
         *piece=c;
+        i++;
+        continue;
+
     }
+    if(i==29&&islower(c)){
+        wdied.die[wdied.counter]=c;
+        wdied.counter++;
+        continue;
     }
+    if(i==29&&isupper(c)){
+        bdied.die[bdied.counter]=c;
+        bdied.counter++;
+        continue;
+
+    }
+}
     fclose(fr);
 
 }

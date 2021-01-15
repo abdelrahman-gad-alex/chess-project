@@ -7,10 +7,28 @@ int pw[8];
 int pb[8];
 char board[8][8] ;
 
+struct died
+{
+	char die[15];
+    int counter ;
+}wdied,bdied;
+
+
+
 void movement (int movej, int movei,int movefj, int movefi)
 {
 
 char temp=board[movej][movei];
+
+if (isupper(board[movefj][movefi])){
+    bdied.die[bdied.counter]=board[movefj][movefi];
+    bdied.counter++;
+}
+else if(islower(board[movefj][movefi])){
+    wdied.die[wdied.counter]=board[movefj][movefi];
+    wdied.counter++;
+}
+
 
 if ((movei+movej)%2==0){
     board[movej][movei]='-';
