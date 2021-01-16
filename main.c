@@ -130,7 +130,7 @@ int main(){
         if(piece=='w'){
             printf("White:");
         }else{
-            printf("black:");
+            printf("Black:");
         }
         printf(" Enter Move \n");
         while (1){
