@@ -28,6 +28,8 @@ char board[8][8] = {
 void CheckCastling();
 int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char pro) ;
 void movement (int movej, int movei,int movefj, int movefi) ;
+int pw[8];
+int pb[8];
 struct died
 {
 	char die[15];
@@ -77,17 +79,18 @@ void printBoard(){
         for (int i=0;i<wdied.counter;i++){
             printf (" %c ",wdied.die[i]);
         }
+        printf("\n") ;
     }
     if(bdied.counter){
-        printf ("\nBlack died pieces :-");
+        printf ("Black died pieces :-");
 
         for (int i=0;i<bdied.counter;i++){
             printf (" %c ",bdied.die[i]);
 
         }
-        printf("\n\n") ;
+        printf("\n") ;
     }
-
+    printf("\n");
 
 }
 
@@ -156,14 +159,14 @@ int main(){
 
             }else if(move[0]=='s'&&move[1]=='a'&&move[2]=='v'&&move[3]=='e'&&move[4]=='\0'){  // if entered save
                 save(piece);
-                char t[1];
+                char t[4];
                 while(1){
                     printf("Continue(Y/N):");
                     gets(t);
-                    if (tolower(t[0])=='y'){
+                    if(tolower(t[0])=='y'){
                         exit=0;
                         x=0;
-                printBoard();
+                        printBoard();
                         break;
                     }else if (tolower(t[0])=='n'){
                         exit=1;
@@ -210,35 +213,43 @@ int main(){
         if(x){
             movement ( movej, movei, movefj, movefi );
             printBoard();
-            if(checked(o)){
-                if(checkmate(o)){
+
+            if (piece=='w'){
+                piece='b';
+                o = 'w';
+                for(int i=0; i<8 ; i++){
+                    pb[i]=0;
+                }
+            }else{
+                piece='w';
+                o = 'b';
+                for(int i=0; i<8 ; i++){
+                    pw[i]=0;
+                }
+            }
+
+            ifchecked= checked(piece) ;
+            storemove(piece, ifchecked, 'p') ;
+
+            if(ifchecked){
+                if(checkmate(piece)){
                     printf("Check Mate!%c%c%c%c\n",7,7,7,7);
-                    if (o=='w'){
+                    if (piece=='w'){
                         printf ("Black Wins!\n");
                     }else{
                         printf ("White Wins!\n");
                     }
                     exit=1;
                 }else{
-                printf("Checked!!%c%c\n",7,7);
-                ifchecked=1;
+                    printf("Checked!!%c%c\n",7,7);
+
                 }
-            }else if (stalemate(o)){
-                        printf("Draw%c%c%c%c\n",7,7,7,7);
-                        exit=1;
-            }else{
-                ifchecked=0;
-
+            }else if (stalemate(piece)){
+                printf("Draw%c%c%c%c\n",7,7,7,7);
+                exit=1;
             }
 
-            if (piece=='w'){
-                piece='b';
-                o = 'w';
-            }else{
-                piece='w';
-                o = 'b';
-            }
-            storemove(piece, ifchecked, 'p') ;
+
 
         }
 

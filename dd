@@ -1,1 +1,0 @@
--.BQKBNRR-.PPPPP-.N.-.-..-.-.-.--.-.-.-..-.-.-.--ppppppp.nbqkbnr10100000000000000000wprrPPP

@@ -6,22 +6,16 @@
 int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char pro);
 void movement (int movej, int movei,int movefj, int movefi) ;
 
+int undoRedo(char unRedo, char *p, int *ifchecked);
+
 char board[8][8] ;
-int y ;
-int pw[8];
-int pb[8];
+
 
 struct pieces{
     int k[2] ;
     int places[16][2] ;
     int NOp ;
 }whitePieces , BlackPieces ;
-struct died
-{
-	char die[15];
-    int counter ;
-}wdied,bdied;
-
 
 int checkby[3] = {0,0,0} ;
 
@@ -97,35 +91,14 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro)
     if(movei<0 || movei >7 || movej<0 || movej >7 || movefi<0 || movefi >7 || movefj<0 || movefj >7){
         return 1 ;
     }
-    char start = board[movej][movei] ;
-    char finish =board[movefj][movefi] ;
     int storeCheckBy[3] ;
-    for(int n=0 ; n<3 ; n++){
-        storeCheckBy[n] = checkby[n] ;
-    }
-    int wcount = wdied.counter ;
-    int bcount = bdied.counter ;
 
     if(CheckMovement(movej, movei, movefj, movefi, p,pro)){
         movement(movej,movei,movefj,movefi) ;
         int r ;
         r = checked(p) ;
-
-        board[movej][movei] = start ;
-        board[movefj][movefi] = finish;
-        if (y){     // embassont happened
-            if(start=='p'){
-                board[movej][movefi] = 'P' ;
-                pb[movefi] = 1;
-            }else{
-                board[movej][movefi] = 'p' ;
-                pw[movefi] = 1;
-            }
-        }
-        y=0 ;
-
-        wdied.counter = wcount ;   //clear die
-        bdied.counter = bcount ;
+        int ifchecked ;
+        undoRedo('c', &p, &ifchecked);
 
         for(int n=0 ; n<3 ; n++){
             checkby[n] = storeCheckBy[n] ;
