@@ -92,6 +92,9 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro)
         return 1 ;
     }
     int storeCheckBy[3] ;
+    for(int n=0 ; n<3 ; n++){
+        storeCheckBy[n] = checkby[n] ;
+    }
 
     if(CheckMovement(movej, movei, movefj, movefi, p,pro)){
         movement(movej,movei,movefj,movefi) ;
@@ -182,6 +185,17 @@ int checkmate(char p){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
                 b = current->places[x][1] ;
+                char piece = board[a][b] ;
+
+                if(piece=='p' && a==1){
+                    if (tempMoveCheck(p, a, b,i, y,'q')-1){
+                        return 0 ;
+                    }
+                }else if(piece=='P' && a==6){
+                    if (tempMoveCheck(p, a, b,i, y,'Q')-1){
+                        return 0 ;
+                    }
+                }
                 if (tempMoveCheck(p, a, b,i, y,'\0')-1){
                     return 0 ;
                 }
@@ -192,16 +206,7 @@ int checkmate(char p){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
                 b = current->places[x][1] ;
-                char piece = board[a][b] ;
-                if(piece=='p' && a==1){
-                    if (tempMoveCheck(p, a, b, y, j,'q')-1){
-                        return 0 ;
-                    }
-                }else if(piece=='P' && a==6){
-                    if (tempMoveCheck(p, a, b, y, j,'Q')-1){
-                        return 0 ;
-                    }
-                }
+
                 if (tempMoveCheck(p, a, b, y, j,'\0')-1){
                     return 0 ;
                 }
