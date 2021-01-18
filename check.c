@@ -2,7 +2,7 @@
 #include<conio.h>
 #include <stdlib.h>
 
-
+//Movement Functions
 int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char pro);
 void movement (int movej, int movei,int movefj, int movefi) ;
 
@@ -10,20 +10,20 @@ int undoRedo(char unRedo, char *p, int *ifchecked);
 
 char board[8][8] ;
 
-
+// Structure for the current pieces in board
 struct pieces{
-    int k[2] ;
+    int k[2] ;  // king place
     int places[16][2] ;
-    int NOp ;
+    int NOp ;  // number of pieces
 }whitePieces , BlackPieces ;
 
-int checkby[3] = {0,0,0} ;
+int checkby[3] = {0,0,0} ;  // {Number of pieces making check, i of the piece, j of the piece}
 
 
 
 
 void storepieces(){
-    // put the places in the struct
+    // put the places in the structure
     whitePieces.NOp = 0 ;
     BlackPieces.NOp = 0 ;
 
@@ -53,11 +53,12 @@ void storepieces(){
 
 
 int checked(char p){
+    // check function
     storepieces() ;
 
     struct pieces *current ;
     int i,j ;
-    char o ;
+    char o ;  // the opposite player
     if(p == 'b'){
         current = &whitePieces ;
         i = BlackPieces.k[0] ;
@@ -70,12 +71,12 @@ int checked(char p){
         o = 'b' ;
     }
 
-    int r = 0 ;
+    int r = 0 ; // the return variable for if checked or not
     checkby[0] = 0 ;
-    for(int x=0 ; x<current->NOp ; x++){
+    for(int x=0 ; x<current->NOp ; x++){  // loop on the the opposite pieces
         int a = current->places[x][0] ;
         int b = current->places[x][1] ;
-        if (CheckMovement(a, b,i, j,o, '\0')){
+        if (CheckMovement(a, b,i, j,o, '\0')){  // can go to the king will be check
             r = 1 ;
             checkby[0] ++ ;
             checkby[1] = a ;
@@ -88,22 +89,24 @@ int checked(char p){
 
 
 int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro){
+    // do a move temporary if valid , and see if check after doing the move or not then return to origin
+    // returned 1 is not valid or will be checked, return 0 if valid and will not be checked
     if(movei<0 || movei >7 || movej<0 || movej >7 || movefi<0 || movefi >7 || movefj<0 || movefj >7){
         return 1 ;
     }
-    int storeCheckBy[3] ;
+    int storeCheckBy[3] ;  // storing check by piece details
     for(int n=0 ; n<3 ; n++){
         storeCheckBy[n] = checkby[n] ;
     }
 
-    if(CheckMovement(movej, movei, movefj, movefi, p,pro)){
+    if(CheckMovement(movej, movei, movefj, movefi, p,pro)){  // if valid move
         movement(movej,movei,movefj,movefi) ;
         int r ;
-        r = checked(p) ;
+        r = checked(p) ;  // the return variable
         int ifchecked ;
-        undoRedo('c', &p, &ifchecked);
+        undoRedo('c', &p, &ifchecked);  // restore the current board and variables without changes
 
-        for(int n=0 ; n<3 ; n++){
+        for(int n=0 ; n<3 ; n++){  // restore the check by details
             checkby[n] = storeCheckBy[n] ;
         }
         return r ;
@@ -115,6 +118,7 @@ int tempMoveCheck(char p, int movej, int movei,int movefj, int movefi, char pro)
 }
 
 void minMax (int arr[]){
+    // sort arr of 2
     if (arr[0]>arr[1]){
         int temp = arr[0] ;
         arr[0] = arr[1] ;
@@ -126,7 +130,7 @@ void minMax (int arr[]){
 int checkmate(char p){
     struct pieces *current ;
     int i,j,a,b ;
-    if(p == 'b'){
+    if(p == 'b'){  // get the king place and the pieces places
         current = &BlackPieces ;
         i = BlackPieces.k[0] ;
         j = BlackPieces.k[1] ;
@@ -136,7 +140,7 @@ int checkmate(char p){
         j = whitePieces.k[1] ;
     }
 
-    // king moves
+    // king moves to get out of the check
     for(int x=-1 ; x<2 ; x++){
         for(int y=-1 ; y<2 ; y++){
             if(x==0 && y==0){
@@ -147,26 +151,26 @@ int checkmate(char p){
             }
         }
     }
-    // more than one piece making check
+    // more than one piece making check and king can't move then will be checkmate
     if(checkby[0]>1){
         return 1 ;
     }
-    // if the checkby piece can be eaten
-    int ich = checkby[1] ;
+    // if the check is by piece can be eaten
+    int ich = checkby[1] ;  // the place of the check by piece
     int jch= checkby[2] ;
     for(int x=0 ; x<current->NOp ; x++){
-        a = current->places[x][0] ;
+        a = current->places[x][0] ;  // the place of the piece of the current piece in loop
         b = current->places[x][1] ;
         char piece = board[a][b] ;
-        if(piece=='p' && a==1){
+        if(piece=='p' && a==1){  // white pawn and will be promoted while eating
             if (tempMoveCheck(p, a, b,ich, jch,'q')-1){
                 return 0 ;
             }
-        }else if(piece=='P' && a==6){
+        }else if(piece=='P' && a==6){  // black pawn and will be promoted while eating
             if (tempMoveCheck(p, a, b,ich, jch,'Q')-1){
                 return 0 ;
             }
-        }else if (tempMoveCheck(p, a, b,ich, jch,'\0')-1){
+        }else if (tempMoveCheck(p, a, b,ich, jch,'\0')-1){  //other piece can eat the piece which making the check
             return 0 ;
         }
     }
@@ -176,32 +180,33 @@ int checkmate(char p){
         return 1 ;
     }
 
-    int mMi[2] = {i,ich} ;
+    // see if the path between the king and the check by piece can be interrupted
+    int mMi[2] = {i,ich} ;     // sort the indexes of the path
     int mMj[2] = {j,jch} ;
     minMax(mMi) ;
     minMax(mMj) ;
-    if(i==ich){  // same horizontal
+    if(i==ich){  // the king and piece are at the same horizontal line
         for(int y= mMj[0]+1 ; y<mMj[1] ; y++){
             for(int x=0 ; x<current->NOp ; x++){
-                a = current->places[x][0] ;
+                a = current->places[x][0] ;     // the place of the piece of the current piece in loop
                 b = current->places[x][1] ;
                 char piece = board[a][b] ;
 
-                if(piece=='p' && a==1){
+                if(piece=='p' && a==1){     // white pawn and will be promoted while interrupting the path
                     if (tempMoveCheck(p, a, b,i, y,'q')-1){
                         return 0 ;
                     }
-                }else if(piece=='P' && a==6){
+                }else if(piece=='P' && a==6){       // black pawn and will be promoted while interrupting the path
                     if (tempMoveCheck(p, a, b,i, y,'Q')-1){
                         return 0 ;
                     }
                 }
-                if (tempMoveCheck(p, a, b,i, y,'\0')-1){
+                if (tempMoveCheck(p, a, b,i, y,'\0')-1){  // other piece will interrupt the path
                     return 0 ;
                 }
             }
         }
-    }else if (j==jch){  // same vertical
+    }else if (j==jch){  // the king and piece are at the same vertical line
         for(int y= mMi[0]+1 ; y<mMi[1] ; y++){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
@@ -212,7 +217,7 @@ int checkmate(char p){
                 }
             }
         }
-    }else if((i-ich)*(j-jch)>0){  // diagonal in "\"
+    }else if((i-ich)*(j-jch)>0){  // the king and piece are at the diagonal in "\"
         for(int y= 1 ; y<mMi[1]-mMi[0] ; y++){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
@@ -222,7 +227,7 @@ int checkmate(char p){
                 }
             }
         }
-    }else if((i-ich)*(j-jch)<0){  // diagonal in /
+    }else if((i-ich)*(j-jch)<0){  // the king and piece are at the diagonal in /
         for(int y= 1 ; y<mMi[1]-mMi[0] ; y++){
             for(int x=0 ; x<current->NOp ; x++){
                 a = current->places[x][0] ;
@@ -234,13 +239,15 @@ int checkmate(char p){
         }
     }
 
-
+    // else then its checkmate
     return 1 ;
 
 }
 
 
 int lackofCheckmate(char p){
+    // this function see if there lack if checkmate material for the player p
+    // if the pieces with the king was b of n or n,n
     int NOp ;
     struct pieces *current ;
     if(p=='b'){
@@ -278,11 +285,11 @@ int lackofCheckmate(char p){
 
 
 int stalemate(char p){
-    if (lackofCheckmate('w')==1 && lackofCheckmate('b')==1){
+    if (lackofCheckmate('w')==1 && lackofCheckmate('b')==1){  // check if there lack of checkmate material first, that will be draw
         return 1 ;
     }
 
-    struct pieces *current ;
+    struct pieces *current ;    // get the data for the current player
     int i,j ;
     if(p == 'b'){
         current = &BlackPieces ;
@@ -294,7 +301,7 @@ int stalemate(char p){
         j = whitePieces.k[1] ;
     }
 
-    // For the king's moves
+    // if the king has moves
     for(int x=-1 ; x<2 ; x++){
         for(int y=-1 ; y<2 ; y++){
             if(x==0 && y==0){
@@ -306,22 +313,23 @@ int stalemate(char p){
         }
     }
 
+    // see if the pieces can move
     for(int z=0 ; z<current->NOp ; z++){
         i= current->places[z][0] ;
         j= current->places[z][1] ;
         if(board[i][j]=='k' ||board[i][j]=='K'){
             continue ;
         }
-        if (board[i][j]=='b' || board[i][j]=='q' || board[i][j]=='B' || board[i][j]=='Q' ){
+        if (board[i][j]=='b' || board[i][j]=='q' || board[i][j]=='B' || board[i][j]=='Q' ){  // if b or q will the the diagonal moves
             if(tempMoveCheck(p, i, j, i+1, j+1,'\0')==0 || tempMoveCheck(p, i, j, i-1, j+1,'\0')==0 || tempMoveCheck(p, i, j, i+1, j-1,'\0')==0 ||tempMoveCheck(p, i, j, i-1, j-1,'\0')==0 ){
                 return 0 ;
             }
         }
-        if (board[i][j]=='r' || board[i][j]=='q' || board[i][j]=='R' || board[i][j]=='Q' ){
+        if (board[i][j]=='r' || board[i][j]=='q' || board[i][j]=='R' || board[i][j]=='Q' ){  // if r or q will the the vertical and horizontal moves
             if(tempMoveCheck(p, i, j, i+1, j,'\0')==0 || tempMoveCheck(p, i, j, i-1, j,'\0')==0 || tempMoveCheck(p, i, j, i, j+1,'\0')==0 ||tempMoveCheck(p, i, j, i, j-1,'\0')==0 ){
                 return 0 ;
             }
-        }else if (board[i][j]=='n' || board[i][j]=='N'){
+        }else if (board[i][j]=='n' || board[i][j]=='N'){   // if n will see its moves
             for(int x=-2 ; x<3 ; x++){
                 for(int y=-3 ; y<3 ; y++){
                     if (x*y == 2 || x*y == -2){
@@ -330,17 +338,17 @@ int stalemate(char p){
                     }}
                 }
             }
-        }else if (board[i][j]=='p'){
+        }else if (board[i][j]=='p'){  // the white pawn moves
             char pro ='\0';
-            if (j==1){
+            if (j==1){       // if will be promoted
                 pro = 'q' ;
             }
             if(tempMoveCheck(p, i, j, i-1, j,pro)==0 || tempMoveCheck(p, i, j, i-1, j-1,pro)==0 || tempMoveCheck(p, i, j, i-1, j+1,pro)==0 ){
                 return 0 ;
             }
-        }else if (board[i][j]=='P'){
+        }else if (board[i][j]=='P'){  // the black pawn moves
             char pro ='\0';
-            if (j==6){
+            if (j==6){      // if will be promoted
                 pro = 'Q' ;
             }
             if(tempMoveCheck(p, i, j, i+1, j,pro)==0 || tempMoveCheck(p, i, j, i+1, j-1,pro)==0 || tempMoveCheck(p, i, j, i+1, j+1,pro)==0 ){
@@ -349,6 +357,8 @@ int stalemate(char p){
         }
     }
 
+
+    // if no piece can move then it is stalemate
     return 1 ;
 
 }
