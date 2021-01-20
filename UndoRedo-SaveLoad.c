@@ -2,38 +2,47 @@
 #include<conio.h>
 #include <stdlib.h>
 #include <ctype.h>
-struct node
-{
-	char chess[8][8];
-	char player ;
-    int R[4];
-    int pw[8];
-    int pb[8];
-    int ifchecked ;
-    int wdie , bdie ;
-	struct node *next;
-	struct node *prev;
-};
-struct node *head = NULL;
-struct node *current = NULL;
 
+char board[8][8] ;
+
+int R[4]={0,0,0,0};  // Mentooooo !!!!!
+int pw[8]={0,0,0,0,0,0,0,0};
+int pb[8]={0,0,0,0,0,0,0,0};
 struct died
 {
 	char die[15];
     int counter ;
 }wdied,bdied;
 
-char board[8][8] ;
 
-int R[4]={0,0,0,0};
-int pw[8]={0,0,0,0,0,0,0,0};
-int pb[8]={0,0,0,0,0,0,0,0};
+// Undo and Redo part
+struct node
+{
+	char chess[8][8];  // the chess board
+	char player ;
+    int R[4];
+    int pw[8];
+    int pb[8];
+    int ifchecked ;  // refer if in this play there are check on the king
+    int wdie , bdie ;  // counter of the died pieces
+	struct node *next;  // pointer on the next node for redo
+	struct node *prev;  // pointer on the previous node for undo
+};
+struct node *head = NULL;
+struct node *current = NULL;
+/*
+we are using linked lest for that
+every node refer to a play
+*/
+
+
 
 void storemove(char p, int ifchecked, char startorPlay){
 
     struct node *t;
-    t = (struct node*)malloc(sizeof(struct node));
+    t = (struct node*)malloc(sizeof(struct node));  // create the node
 
+    // storing the current data in node
     for(int i=0 ; i<8 ; i++){
         for(int j=0 ; j<8 ; j++){
             t->chess[i][j] = board[i][j] ;
@@ -53,38 +62,43 @@ void storemove(char p, int ifchecked, char startorPlay){
     if (startorPlay=='s'){  //Start game
         t->next = NULL ;
         t->prev = NULL ;
-        head = t ;
+        head = t ;  // making it the head(the start of the game) and the current
         current = head ;
 
     }else if(startorPlay=='p'){ // play in game
         current->next = t ;
-        t ->prev = current ;
+        t ->prev = current ;  // making the previous current points to this node
         t ->next = NULL ;
-        current = t ;
+        current = t ;  // making this node is the current
     }
 }
 
 int undoRedo(char unRedo, char *p, int *ifchecked){
-    if(unRedo=='u'){  // undo
-        if(current->prev != NULL){
-            current = current->prev ;
+    // the return value = 1 if can happen and done
+    // the return value = 0 if can't happen and did not do it
+
+    if(unRedo=='u'){  // refer to undo
+        if(current->prev != NULL){  // check if there a previous for the current first
+            current = current->prev ; // make the previous is the current
         }else{
-            return 0;
+            return 0;  // can't done
         }
-    }else if(unRedo=='r'){  // redo
-        if(current->next != NULL){
-            current = current->next ;
+    }else if(unRedo=='r'){  // refer to redo
+        if(current->next != NULL){  // check if there a next for the current first
+            current = current->next ;  // make the next is the current
         }else{
-            return 0;
+            return 0;   // can't done
         }
     }
+    // else if the unRedo = 'c' then it mean that restore the data in current
+
+    // restoring data
     for(int i=0 ; i<8 ; i++){
         for(int j=0 ; j<8 ; j++){
             board[i][j] = current->chess[i][j] ;
     }}
 
     *p = current->player ;
-//    printf("%c", current->player) ;
     for(int i=0 ; i<8 ; i++){
         pw[i] = current->pw[i] ;
         pb[i] =current->pb[i] ;
@@ -97,27 +111,8 @@ int undoRedo(char unRedo, char *p, int *ifchecked){
     bdied.counter = current->bdie  ;
 
 
-    return 1 ;
+    return 1 ; // it means that the restore is done
 }
-
-
-void printstored(){
-    printf("%c\n",current->player) ;
-    for(int i=0 ; i<8 ; i++){
-        for(int j=0 ; j<8 ; j++){
-            printf("%c ",current->chess[i][j]) ;
-        }
-        printf("\n") ;
-    }
-    for(int i=0 ; i<8 ; i++){
-        printf("%d ",current->pw[i]) ;
-        printf("%d ",current->pb[i]) ;
-    }
-    for(int i=0 ; i<4 ; i++){
-        printf("%d ",current->R[i]) ;
-    }
-}
-
 
 
 
