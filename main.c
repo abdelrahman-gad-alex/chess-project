@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<conio.h>
+#include <ctype.h>
 /*
                     { 'R' , 'N' , 'B' , 'Q' , 'K' , 'B' , 'N' , 'R' },
                     { 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' },
@@ -13,7 +14,7 @@
 */
 
 
-
+//the chess board
 char board[8][8] = {
                     { 'R' , 'N' , 'B' , 'Q' , 'K' , 'B' , 'N' , 'R' },
                     { 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' , 'P' },
@@ -28,9 +29,9 @@ char board[8][8] = {
 void CheckCastling();
 int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char pro) ;
 void movement (int movej, int movei,int movefj, int movefi) ;
-int pw[8];
-int pb[8];
-struct died
+int pw[8];      //white enpassent indicators
+int pb[8];      //black enpassent indicators
+struct died     //struct to store the dead pieces
 {
 	char die[15];
     int counter ;
@@ -113,7 +114,7 @@ int main(){
 
 
     printf("(start/load)\nMake Your Choice\n");
-    while(1){
+    while(1){//here we ask the user if he wants to start a new game or load a saved game
         gets(sl);
         if(sl[0]=='l'&&sl[1]=='o'&&sl[2]=='a'&&sl[3]=='d'&&sl[4]=='\0'){
             load(&piece);
@@ -167,16 +168,16 @@ int main(){
                 save(piece);
                 char t[4];
                 while(1){
-                    printf("Continue(Y/N):");
+                    printf("Continue(Y/N):");//here we see if the user want to continue the game after saving or just exit
                     gets(t);
                     if(tolower(t[0])=='y'){
-                        exit=0;
-                        x=0;
+                        exit=0;  //it will break the game loop
+                        x=0; // there no move will happen
                         printBoard();
                         break;
                     }else if (tolower(t[0])=='n'){
-                        exit=1;
-                        x=0;
+                        exit=1;  //it will not break the game loop
+                        x=0;  // there no move will happen
                         break;
                     }
                 }
@@ -239,7 +240,7 @@ int main(){
 
             if(ifchecked){
                 if(checkmate(piece)){  // see if there a checkmate
-                    printf("Checkmate!%c%c%c%c\n",7,7,7,7);
+                    printf("Checkmate!%c%c%c%c\n",7,7,7,7); //the ascii code 7 refers to bell (a sound) which we use as alert in case of checked, checkmate and draw.
                     if (piece=='w'){
                         printf ("Black Wins!\n");
                     }else{
