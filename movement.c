@@ -26,7 +26,7 @@ void movement (int movej, int movei,int movefj, int movefi)  //The movement func
         wdied.counter++;
     }
 
-    else if ((movei+movej)%2==0){ //here we replace the initial place with a - if the initial place is an even square.
+    if ((movei+movej)%2==0){ //here we replace the initial place with a - if the initial place is an even square.
         board[movej][movei]='-';
     }else{
         board[movej][movei]='.';//else we replace it with a . .
