@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1610999669 source:e:\term 3\programming 1\project real\movement.c
+1611399706 source:e:\term 3\programming 1\project real\movement.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
@@ -9,17 +9,18 @@
 	<conio.h>
 	<stdlib.h>
 
-1610893063 source:e:\term 3\programming 1\project real\main.c
+1611399706 source:e:\term 3\programming 1\project real\main.c
 	<stdio.h>
 	<stdlib.h>
 	<conio.h>
+	<ctype.h>
 
-1611000865 source:e:\term 3\programming 1\project real\check.c
+1611003646 source:e:\term 3\programming 1\project real\check.c
 	<stdio.h>
 	<conio.h>
 	<stdlib.h>
 
-1610999669 source:e:\term 3\programming 1\project real\undoredo-saveload.c
+1611399706 source:e:\term 3\programming 1\project real\undoredo-saveload.c
 	<stdio.h>
 	<conio.h>
 	<stdlib.h>

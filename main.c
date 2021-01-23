@@ -191,6 +191,9 @@ int main(){
                         o = 'w';
                     }
                     printBoard();
+                    if(ifchecked){
+                        printf("Checked!!%c%c\n",7,7);
+                    }
                     break ;
                 }else{
                     printf("Can't do undo\n");
@@ -205,6 +208,9 @@ int main(){
                         o = 'w';
                     }
                     printBoard();
+                    if(ifchecked){
+                        printf("Checked!!%c%c\n",7,7);
+                    }
                     break ;
                 }else{
                     printf("Can't do redo\n");
