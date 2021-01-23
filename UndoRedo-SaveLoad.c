@@ -118,133 +118,132 @@ int undoRedo(char unRedo, char *p, int *ifchecked){
 
 void save(char piece){// its a function to save the game in any time
 
-//here we get from the user the name of the saved file.
-char file1[100];
-printf("Enter the name of the save file\n");
-gets(file1);
+    //here we get from the user the name of the saved file.
+    char file1[100];
+    printf("Enter the name of the save file\n");
+    gets(file1);
 
-//here we create a file with the name the user entered
-FILE *fp;
-fp  = fopen (file1, "w");
+    //here we create a file with the name the user entered
+    FILE *fp;
+    fp  = fopen (file1, "w");
 
-//here we save the board
-for (int i=0;i<8;i++){
-    for (int j=0;j<8;j++){
-        fputc(board[i][j], fp);
+    //here we save the board
+    for (int i=0;i<8;i++){
+        for (int j=0;j<8;j++){
+            fputc(board[i][j], fp);
+            }
         }
+
+    //here we save the castling indecators
+    for (int i=0;i<4;i++){
+        fputc((R[i]+'0'), fp);
     }
 
-//here we save the castling indecators
-for (int i=0;i<4;i++){
-    fputc((R[i]+'0'), fp);
-}
+    //here we save the white enpassent indecators
+    for (int i=0;i<8;i++){
+        fputc((pw[i]+'0'), fp);
+    }
 
-//here we save the white enpassent indecators
-for (int i=0;i<8;i++){
-    fputc((pw[i]+'0'), fp);
-}
+    //here we save the black enpassent indecators
+    for (int i=0;i<8;i++){
+        fputc((pb[i]+'0'), fp);
+    }
 
-//here we save the black enpassent indecators
-for (int i=0;i<8;i++){
-    fputc((pb[i]+'0'), fp);
-}
+    //here we save the the turn (black or white)
+    fputc(piece,fp);
 
-//here we save the the turn (black or white)
-fputc(piece,fp);
+    //here we save the white died pieces
+    for (int i=0;i<wdied.counter;i++){
+        fputc(wdied.die[i],fp);
+    }
 
-//here we save the white died pieces
-for (int i=0;i<wdied.counter;i++){
-    fputc(wdied.die[i],fp);
-}
+    //here we save the black died pieces
+    for (int i=0;i<bdied.counter;i++){
+        fputc(bdied.die[i],fp);
+    }
 
-//here we save the black died pieces
-for (int i=0;i<bdied.counter;i++){
-    fputc(bdied.die[i],fp);
-}
-
-//here we close the created file.
-fclose(fp);
+    //here we close the created file.
+    fclose(fp);
 
 }
 
 
 void load(char *piece){// it is a function to load the game in the start of the game
-char c,name[100];
-int i=0,j=0;
-FILE *fr;
+    char c,name[100];
+    int i=0,j=0;
+    FILE *fr;
 
-//here we take the name of the saved file from the user and check if there is any saved file by that name .
-//if it is found we open the file and break the loop then start loading data
-//if it is not found we print not found then the loop repeats it self and asks for the name of the saved file
-printf("Enter the name of the load file\n");
-while (1){
-    gets(name);
-    fr=fopen(name,"r");
-    if (fr){
-        break;
+    //here we take the name of the saved file from the user and check if there is any saved file by that name .
+    //if it is found we open the file and break the loop then start loading data
+    //if it is not found we print not found then the loop repeats it self and asks for the name of the saved file
+    printf("Enter the name of the load file\n");
+    while (1){
+        gets(name);
+        fr=fopen(name,"r");
+        if (fr){
+            break;
+        }
+        else{
+        printf("Not found.\n");
+        }
     }
-    else{
-    printf("Not found.\n");
-    }
-}
 
-//here we load the chess board
+    //here we load the chess board
     while ((c = getc(fr)) != EOF) {
-    if(i<8&&j<8){
-    (board[i][j]= c);
-     j++;
-     if (j==8)   {
-        i++;
-        j=0;
-        continue;
+        if(i<8&&j<8){
+            (board[i][j]= c);
+             j++;
+             if (j==8)   {
+                i++;
+                j=0;
+                continue;
 
-     }}
-
-//here we load the castling indicators
-    if(i>=8&&i<12){
-        R[i-8]= c-'0';
-        i++;
-        continue;
-
+             }
         }
 
-//here we load the white enpassent indicators
-    if(i>=12&&i<20){
-        pw[i-12]= c-'0';
-        i++;
-        continue;
+    //here we load the castling indicators
+        if(i>=8&&i<12){
+            R[i-8]= c-'0';
+            i++;
+            continue;
 
         }
+    //here we load the white enpassent indicators
+        if(i>=12&&i<20){
+            pw[i-12]= c-'0';
+            i++;
+            continue;
 
-//here we load the black enpassent indicators
-    if(i>=20&&i<28){
-        pb[i-20]= c-'0';
-        i++;
-        continue;
         }
+    //here we load the black enpassent indicators
+        if(i>=20&&i<28){
+            pb[i-20]= c-'0';
+            i++;
+            continue;
 
-//here we load the turn (black or white)
-    if (i==28){
-        *piece=c;
-        i++;
-        continue;
+        }
+    //here we load the turn (black or white)
+        if (i==28){
+            *piece=c;
+            i++;
+            continue;
 
-    }
-//here we load the white died pieces
-    if(i==29&&islower(c)){
-        wdied.die[wdied.counter]=c;
-        wdied.counter++;
-        continue;
-    }
-//here we load the black died pieces
-    if(i==29&&isupper(c)){
-        bdied.die[bdied.counter]=c;
-        bdied.counter++;
-        continue;
+        }
+    //here we load the white died pieces
+        if(i==29&&islower(c)){
+            wdied.die[wdied.counter]=c;
+            wdied.counter++;
+            continue;
+        }
+    //here we load the black died pieces
+        if(i==29&&isupper(c)){
+            bdied.die[bdied.counter]=c;
+            bdied.counter++;
+            continue;
 
+        }
     }
-}
-//then we close the file.
+    //then we close the file.
     fclose(fr);
 
 }

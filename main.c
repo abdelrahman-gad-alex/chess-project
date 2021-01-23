@@ -103,7 +103,6 @@ void printBoard(){
 int main(){
     char sl[5];
     int exit=0;
-    int z=0;
     int ifchecked ;  // refer to if there a check or not
     int movei=0,movej=0, movefi=0,movefj=0;
     int x=0;    // refer if move will happen or not
@@ -220,12 +219,12 @@ int main(){
         if(x){  // if move will happen
             movement ( movej, movei, movefj, movefi );  // do the move
             printBoard();
-
-            if (piece=='w'){  // switch players
+            // here we switch players and make the indicators of the other players enpassent equal to zero to disallow the enpassent in the next turns for the same piece
+            if (piece=='w'){
                 piece='b';
                 o = 'w';
                 for(int i=0; i<8 ; i++){
-                    pb[i]=0;  // Mentoooo !! bsafer el emboasont shof 7tktbha ezay XD XD
+                    pb[i]=0;  //here we make the indicators
                 }
             }else{
                 piece='w';
