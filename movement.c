@@ -407,7 +407,7 @@ int CheckMovement(int movej, int movei,int movefj, int movefi, char piece,char p
         }
         return x;
     }else{
-        return 0;
+        return x;
     }
 }
 
