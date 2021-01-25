@@ -115,13 +115,13 @@ int main(){
     printf("(start/load)\nMake Your Choice\n");
     while(1){//here we ask the user if he wants to start a new game or load a saved game
         gets(sl);
-        if(sl[0]=='l'&&sl[1]=='o'&&sl[2]=='a'&&sl[3]=='d'&&sl[4]=='\0'){
+        if(tolower(sl[0])=='l'&&tolower(sl[1])=='o'&&tolower(sl[2])=='a'&&tolower(sl[3])=='d'&&sl[4]=='\0'){
             load(&piece);
             if(piece=='b'){
                 o = 'w';
             }
             break;
-        }else if(sl[0]=='s'&&sl[1]=='t'&&sl[2]=='a'&&sl[3]=='r'&&sl[4]=='t'&&sl[5]=='\0'){
+        }else if(tolower(sl[0])=='s'&&tolower(sl[1])=='t'&&tolower(sl[2])=='a'&&tolower(sl[3])=='r'&&tolower(sl[4])=='t'&&sl[5]=='\0'){
             break;
         }
         printf("(start/load)\nMake Your Choice correctly \n");
@@ -163,7 +163,7 @@ int main(){
                     }
                     printf("Enter Move Correctly\n");
 
-            }else if(move[0]=='s'&&move[1]=='a'&&move[2]=='v'&&move[3]=='e'&&move[4]=='\0'){  // if entered save
+            }else if(tolower(move[0])=='s'&&tolower(move[1])=='a'&&tolower(move[2])=='v'&&tolower(move[3])=='e'&&move[4]=='\0'){  // if entered save
                 save(piece);
                 char t[4];
                 while(1){
@@ -182,7 +182,7 @@ int main(){
                 }
                     break;
 
-            }else if(move[0]=='u'&&move[1]=='n'&&move[2]=='d'&&move[3]=='o'&&move[4]=='\0'){  // if entered undo
+            }else if(tolower(move[0])=='u'&&tolower(move[1])=='n'&&tolower(move[2])=='d'&&tolower(move[3])=='o'&&move[4]=='\0'){  // if entered undo
                 x=0;   // there no move will happen
                 if (undoRedo('u', &piece,  &ifchecked)){  // if undo is valid and done
                     if (piece=='w'){  // restore the opposite player
@@ -199,7 +199,7 @@ int main(){
                     printf("Can't do undo\n");
                 }
 
-            }else if(move[0]=='r'&&move[1]=='e'&&move[2]=='d'&&move[3]=='o'&&move[4]=='\0'){  // if entered redo
+            }else if(tolower(move[0])=='r'&&tolower(move[1])=='e'&&tolower(move[2])=='d'&&tolower(move[3])=='o'&&move[4]=='\0'){  // if entered redo
                 x=0;  // there no move will happen
                 if (undoRedo('r', &piece,  &ifchecked)){  // if redo is valid and done
                     if (piece=='w'){
