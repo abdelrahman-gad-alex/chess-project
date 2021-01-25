@@ -121,7 +121,7 @@ int CheckBishop(int movej, int movei,int movefj, int movefi, char pro) //this fu
             }
         }else if (movefi < movei && movefj > movej){//the movement is to the down left
             for (i=1;i<(movei-movefi);i++){
-                if ((board[movej+i][movei-i]>'a'&&board[movej+i][movei-i]<'z')||(board[movej-i][movei+i]>'A'&&board[movej-i][movei+i]<'Z')){
+                if ((board[movej+i][movei-i]>'a'&&board[movej+i][movei-i]<'z')||(board[movej+i][movei-i]>'A'&&board[movej+i][movei-i]<'Z')){
                 x=0;
                 }
             }
